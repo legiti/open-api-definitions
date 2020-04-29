@@ -1,0 +1,34 @@
+components:
+  schemas:
+    DocumentType:
+      type: string
+      enum:
+        - cpf
+        - cnpj
+        - passport
+        - rg
+        - rne
+        - other
+    OrderStatus:
+      type: string
+      description: >-
+        The status of the order. The allowed values are: 
+        approved, declined, pending, refunded, manual_analysis, 
+        cancelled, and other
+      enum:
+        - approved
+        - declined
+        - pending
+        - refunded
+        - manual_analysis
+        - cancelled
+        - other,
+    PaymentStatus:
+      type: string
+      description: >- 
+        The status of the payment.
+        The allowed values are: approved, declined, and pending
+      enum:
+        - approved
+        - declined
+        - pending

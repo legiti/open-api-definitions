@@ -1,0 +1,148 @@
+components:
+  schemas:
+    Auth:
+      summary: Notify Legiti any time a user tries to login and logout of your platform
+      description: >-
+        Account login/logout behavior is highly correlated with fraudulent 
+        activity. You can send information about successful or failed login 
+        attempts for an account (as well as logouts)
+      tags:
+        - auth
+      operationId: auth_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_id
+                - action_type
+              properties:
+                user_id:
+                  type: string
+                  description: The user ID that was (or was attempted to be) logged into
+                action_type:
+                  type: string
+                  enum:
+                    - login_success
+                    - login_failure
+                    - logout
+                  description: >-
+                    What type of authentication activity occurred. 
+                    Accepted values are limited to 'login_success', 
+                    'login_failure', and 'logout' (case-insensitive)
+      responses:
+        '201':
+          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+        '400':
+          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+        '401':
+          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+        '403':
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+    Address:
+      type: object
+      required:
+        - street_name
+        - street_number
+        - city
+        - zip_code
+        - state
+        - country
+      properties:
+        street_name:
+          type: string
+          description: The street of the address
+        street_number:
+          type: string
+          description: The street number of the address
+        city:
+          type: string
+          description: The city in which the address is located
+        zip_code:
+          type: string
+          description: The zip code (e.g. CEP) of the address
+        state:
+          type: string
+          description: The up to three-character ISO 3166-2 abbreviation of the state in which the address is located
+        country:
+          type: string
+          description: The two-character ISO 3166-2 country code in which the address is located
+        latitude:
+          type: number
+          format: float
+          description: The exact latitude of the address
+        longitude: 
+          type: number
+          format: float
+          description: The exact longitude of the address
+  OrderMarkedFraudulent:
+    summary: Notify Legiti that an order was found to be fraudulent
+    tags:
+      - order
+    operationId: order_marked_fraudulent_post
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - order_id
+              - fraud_signal_type
+            properties:
+              order_id:
+                type: string
+                description: The order's unique identifier within your platform
+              fraud_signal_type:
+                type: string
+                enum:
+                  - acquirer
+                  - manual_analysis
+                  - chargeback
+                  - external_antifraud
+                  - internal_system
+                  - other
+                description: >-
+                  The mechanism by which you identified the order as fraudulent. 
+                  Current accepted values are acquirer, manual_analysis, chargeback, 
+                  external_antifraud, internal_system, and other
+    responses:
+      '201':
+        $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+      '400':
+        $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+      '401':
+        $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+      '403':
+        $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+  PaymentUpdate:
+    summary: Notify Legiti of payment status updates (supplied by your acquirer)
+    tags:
+      - order
+    operationId: payment_update_put
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - id
+              - status
+            properties:
+              id:
+                type: string
+                description: The unique identifier for the payment within your platform
+              status:
+                $ref: "../base/v1/enum.yml#/components/schemas/PaymentStatus"
+              status_reason:
+                type: string
+                description: The reason for the status change
+    responses:
+      '201':
+        $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+      '400':
+        $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+      '401':
+        $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+      '403':
+        $ref: "../base/v1/responses.yml#/components/schemas/403Response"
