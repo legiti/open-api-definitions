@@ -17,6 +17,42 @@ servers:
   - url: 'https://legiti-api.lgtcdn.net'
 paths:
   /ticketing/v1/event:
+    post:
+      description: Notify Legiti any time a new event is created.
+      tags:
+        - event
+      operationId: event_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostEvent"
+      responses:
+        '200':
+          description: Valid create request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        '400':
+          description: Invalid JSON received
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseInvalidJson"
+        '401':
+          description: Auth header not provided
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseAuthNotProvided"
+        '403':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseNotAuthorized"
+          
     put:
       description: Send information to Legiti any time an event's information (description, venue, start/end time, etc...) is altered.
       tags:
@@ -33,42 +69,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              examples:
-                '0':
-                  value: '{"message": "Valid update request!"}'
-      servers:
-        - url: 'https://legiti-api.lgtcdn.net'
-    post:
-      description: Auto generated using Swagger Inspector
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/PostEvent"
-      responses:
-        '201':
-          description: Auto generated using Swagger Inspector
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              examples:
-                '0':
-                  value: '{"message": "Valid create request!"}'
-      servers:
-        - url: 'https://legiti-api.lgtcdn.net'
-    servers:
-      - url: 'https://legiti-api.lgtcdn.net'
+                $ref: "#/components/schemas/PostEvent"
 components:
   schemas:
     PostEvent:
+      $ref: "#/components/schemas/EventEntity/properties"
+      required:
+        - id
+        - title
+        - organizers
+        - is_virtual
+        - valid_from
+        - valid_until
+    PutEvent:
       $ref: "#/components/schemas/EventEntity/properties"
       required:
         - id
@@ -149,18 +162,32 @@ components:
       properties:
         message:
           type: string
-    ErrorResponse:
+    ErrorResponseInvalidJson:
       type: object
-      description: >-
-            List of fields, each one with the name and a message explaining the problem.
+      description: Request body contains invalid JSON
       required:
         - error_message
-    AuthorizationErrorResponse:
+        - error_code
+      properties:
+        error_message:
+          type: string
+        error_code:
+          type: number
+    ErrorResponseAuthNotProvided:
       type: object
+      description: Authorization header not present in request
       required:
         - message
       properties:
         message:
+          type: string
+    ErrorResponseNotAuthorized:
+      type: object
+      description: Provided API token not authorized to access this resource
+      required:
+        - Message
+      properties:
+        Message:
           type: string
   securitySchemes:
     bearerAuth:
