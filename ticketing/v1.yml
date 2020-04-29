@@ -256,6 +256,8 @@ paths:
                       - $ref: "#/components/schemas/BoletoPayment"
                       - $ref: "#/components/schemas/OtherPayment"
       responses:
+        '200':
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '201':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '400':
