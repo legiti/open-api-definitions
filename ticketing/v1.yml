@@ -26,46 +26,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PostEvent"
+              $ref: "#/components/schemas/Event"
       responses:
         '200':
-          description: Valid Sandbox request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schema/SuccessResponse"
+          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
         '201':
-          description: Valid create request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessResponse"
+          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
         '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: "#/components/schemas/ErrorResponseAPI"
+          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
-          description: Auth header not provided
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseAuthNotProvided"
+          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
-          description: Not authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseNotAuthorized"
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response" 
         '503':
-          description: Internal error on DB insertion
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseAPI"
-          
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response" 
     put:
       description: Send information to Legiti any time an event's information (description, venue, start/end time, etc...) is altered.
       tags:
@@ -75,102 +49,273 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PutEvent"
+              $ref: "#/components/schemas/Event"
       responses:
         '200':
-          description: Valid update request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessResponse"
+          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
         '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: "#/components/schemas/ErrorResponseAPI"
+          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
-          description: Auth header not provided
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseAuthNotProvided"
+          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
-          description: Not authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseNotAuthorized"
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
         '503':
-          description: Internal error on DB insertion
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseAPI"
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response" 
+  /ticketing/v1/order:
+    post:
+      summary: Notify Legiti any time a new order is created
+      description: >-
+        You can send order-related information to Legiti via the /order endpoint
+      tags:
+        - order
+      operationId: order_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - user_id
+                - total_paid_value
+                - status
+                - tickets
+                - payments
+              properties:
+                id:
+                  type: string
+                  description: The order's unique identifier within your platform
+                user_id:
+                  type: string
+                  description: The buyer's id
+                total_paid_value:
+                  type: number
+                  format: float
+                  minimum: 0
+                  description: The exact amount that the user paid
+                total_gross_value:
+                  type: number
+                  format: float
+                  minimum: 0
+                  description: The sum of all the order items value
+                discount_value:
+                  type: number
+                  format: float
+                  minimum: 0
+                  description: The discount value applied to the order
+                coupon_names:
+                  type: array
+                  description: >-
+                   The name of the coupons that were applied. Note: 
+                   if coupon_names is provided, discount_value is also required
+                  items:
+                    type: string
+                currency:
+                  type: string
+                  description: The currency of the total_paid_value, as an ISO-4217 currency code
+                status:
+                  $ref: "../base/v1/enum.yml#/#/components/schemas/OrderStatus"
+                tickets:
+                  type: array
+                  description: The purchased tickets
+                  items:
+                    type: object
+                    required:
+                      - id
+                      - event_id
+                      - unit_price
+                      - valid_from
+                      - valid_until
+                    properties:
+                      id:
+                        type: string
+                        description: Your platform's unique identifier for the ticket
+                      unit_price:
+                        type: number
+                        format: float
+                        description: The purchased ticket's unit price
+                      discount:
+                        type: number
+                        format: float
+                        description: The discount amount applied to this ticket
+                      valid_from:
+                        type: string
+                        format: date-time
+                        description: The time at which this ticket becomes valid for entry to the event
+                      valid_until:
+                        type: string
+                        format: date-time
+                        description: The time at which this ticket stops being valid for entry to the event
+                      event_id:
+                        type: string
+                        description: The ID of the Event the ticket is associated with
+                      guest:
+                        type: object
+                        description: The guest with whom the ticket is associated
+                        required:
+                          - name
+                        properties:
+                          email:
+                            type: string
+                            description: The email of the user with whom the ticket is associated
+                          name:
+                            type: string
+                            description: The name of the user with whom the ticket is associated
+                          document_type:
+                            $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
+                            description: >-
+                              The document type associated with the user's document 
+                              number. Accepted values are cpf, cnpj, passport, 
+                              rg, rne, and other
+                          document:
+                            type: string
+                            description: The document number associated with the user
+                payments:
+                  type: array
+                  description: The payments used in this purchase
+                  items:
+                    type: object
+                    required:
+                      - id
+                      - method
+                      - payment_value
+                      - installments
+                      - status
+                    properties:
+                      id:
+                        type: string
+                        description: >-
+                          The unique identifier for the payment within your platform. 
+                          If you don't have one you can send us the order id. 
+                          Be advised that this is the identifier to be used 
+                          if in the future you need to update payment information
+                      method:
+                        type: string
+                        description: The payment's method. The allowed values are credit_card, boleto, wallet, and other
+                        enum:
+                          - credit_card
+                          - boleto
+                          - wallet
+                          - other
+                      payment_value:
+                        type: number
+                        format: float
+                        minimum: 0
+                      installments:
+                        type: integer
+                        description: The number of installments (e.g. "parcelas") to be paid
+                      interest:
+                        type: number
+                        format: float
+                        minimum: 0
+                        maximum: 100
+                        description: >-
+                          The applied interest rate - where 0 means no interest 
+                          was applied and 1 means 100% monthly interest was applied
+                      status:
+                        $ref: "../base/v1/enum.yml#/components/schemas/PaymentStatus"
+                      document_type:
+                        $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
+                        description: >-
+                          The document type associated with the payment's document 
+                          number. Accepted values are cpf, cnpj, passport, rg, 
+                          rne, and other
+                      document:
+                        type: string
+                        description: The document number associated with the payer
+                      credit_card:
+                        type: object
+                        description: >-
+                          The credit card associated with the payment. 
+                          Note: credit_card is required only if the method 
+                          is credit_card
+                        required:
+                          - first_six_digits
+                          - last_four_digits
+                          - expiration_date
+                          - holder_name
+                        properties:
+                          first_six_digits:
+                            type: string
+                            minLength: 6
+                            maxLength: 6
+                            description: The first six digits of the credit card number (should be only digits)
+                          last_four_digits:
+                            type: string
+                            minLength: 4
+                            maxLength: 4
+                            description: The last four digits of the credit card number (should be only digits)
+                          expiration_date:
+                            type: string
+                            minLength: 5
+                            maxLength: 5
+                            pattern: '^([0-9]{2})\/([0-9]{2})$'
+                            description: The credit card's expiration date, formatted as mm/yy
+                          holder_name:
+                            type: string
+                            description: The credit card holder's full name
+                      billing_address:
+                        description: >-
+                          The billing address associated with the payment. 
+                          Note: billing_address is required only if the method 
+                          is credit_card or boleto
+                        $ref: "../base/v1/entities.yml#/components/schemas/Address"
+      responses:
+        '201':
+          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+        '400':
+          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+        '401':
+          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+        '403':
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+    put:
+      summary: Notify Legiti when an order's status is updated.
+      description: Update order status
+      tags:
+        - order
+      operationId: order_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - status
+              properties:
+                id:
+                  type: string
+                  description: The order's unique identifier within your platform
+                status:
+                  $ref: "../base/v1/enum.yml#/#/components/schemas/OrderStatus"
+                status_reason:
+                  type: string
+                  description: The reason for the status change
+      responses:
+        '200':
+          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+        '400':
+          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+        '401':
+          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+        '403':
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+  /ticketing/v1/auth:
+    $ref: "../base/v1/entities.yml#/components/schemas/Auth"
+  /ticketing/v1/order/mark_fraudulent:
+    $ref: "../base/v1/entities.yml#/components/schemas/OrderMarkedFraudulent"
+  /ticketing/v1/order/payment:
+    $ref: "../base/v1/entities.yml#/components/schemas/PaymentUpdate"
 components:
   schemas:
-    PostEvent:
-      $ref: "#/components/schemas/EventEntity/properties"
-      required:
-        - id
-        - title
-        - organizers
-        - is_virtual
-        - valid_from
-        - valid_until
-    PutEvent:
-      $ref: "#/components/schemas/EventEntity/properties"
-      required:
-        - id
-        - title
-        - organizers
-        - is_virtual
-        - valid_from
-        - valid_until
-    Address:
-      type: object
-      required:
-        - street_name
-        - street_number
-        - city
-        - zip_code
-        - state
-        - country
-      properties:
-        street_name:
-          type: string
-          description: The street of the address
-        street_number:
-          type: string
-          description: The street number of the address
-        city:
-          type: string
-          description: The city in which the address is located
-        zip_code:
-          type: string
-          description: The zip code (e.g. CEP) of the address
-        state:
-          type: string
-          description: The up to three-character ISO 3166-2 abbreviation of the state in which the address is located
-        country:
-          type: string
-          description: The two-character ISO 3166-2 country code in which the address is located
-        latitude:
-          type: number
-          format: float
-          description: The exact latitude of the address
-        longitude: 
-          type: number
-          format: float
-          description: The exact longitude of the address
-    EventEntity:
+    Event:
       type: object
       properties:
         is_virtual:
           type: boolean
         venue:
-          $ref: "#/components/schemas/Address"
+          $ref: "../base/v1/entities.yml#/components/schemas/Address"
         organizer_ids:
           type: array
           items:
@@ -192,40 +337,6 @@ components:
         title:
           type: string
         event_start_datetime:
-          type: string
-    SuccessResponse:
-      type: object
-      required:
-        - message
-      properties:
-        message:
-          type: string
-    ErrorResponseAPI:
-      type: object
-      description: Request is missing required properties
-      required:
-        - error_message
-        - error_code
-      properties:
-        error_message:
-          type: object
-        error_code:
-          type: number
-    ErrorResponseNoAuthHeader:
-      type: object
-      description: Authorization header not present in request
-      required:
-        - message
-      properties:
-        message:
-          type: string
-    ErrorResponseAuthorizer:
-      type: object
-      description: Provided API token not authorized to access this resource
-      required:
-        - Message
-      properties:
-        Message:
           type: string
   securitySchemes:
     bearerAuth:
