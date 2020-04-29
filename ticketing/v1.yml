@@ -29,33 +29,13 @@ paths:
               $ref: "#/components/schemas/PostEvent"
       responses:
         '201':
-          description: Valid create request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessResponse"
+          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
         '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: "#/components/schemas/ErrorResponseInvalidJson"
-                  - $ref: "#/components/schemas/ErrorResponseMissingRequiredProperties"
-                  - $ref: "#/components/schemas/ErrorResponseInvaildProperties"
+          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
-          description: Auth header not provided
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseAuthNotProvided"
+          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
-          description: Not authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseNotAuthorized"
-          
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response"      
     put:
       description: Send information to Legiti any time an event's information (description, venue, start/end time, etc...) is altered.
       tags:
@@ -68,32 +48,13 @@ paths:
               $ref: "#/components/schemas/PutEvent"
       responses:
         '200':
-          description: Valid update request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessResponse"
+          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
         '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: "#/components/schemas/ErrorResponseInvalidJson"
-                  - $ref: "#/components/schemas/ErrorResponseMissingRequiredProperties"
-                  - $ref: "#/components/schemas/ErrorResponseInvaildProperties"
+          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
-          description: Auth header not provided
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseAuthNotProvided"
+          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
-          description: Not authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseNotAuthorized"
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
   /ticketing/v1/order:
     post:
       summary: Notify Legiti any time a new order is created
@@ -147,7 +108,7 @@ paths:
                   type: string
                   description: The currency of the total_paid_value, as an ISO-4217 currency code
                 status:
-                  $ref: "#/components/schemas/OrderStatus"
+                  $ref: "../base/v1/enum.yml#/#/components/schemas/OrderStatus"
                 tickets:
                   type: array
                   description: The purchased tickets
@@ -195,7 +156,7 @@ paths:
                             type: string
                             description: The name of the user with whom the ticket is associated
                           document_type:
-                            $ref: "#/components/schemas/DocumentType"
+                            $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
                             description: >-
                               The document type associated with the user's document 
                               number. Accepted values are cpf, cnpj, passport, 
@@ -255,7 +216,7 @@ paths:
                           - declined
                           - pending
                       document_type:
-                        $ref: "#/components/schemas/DocumentType"
+                        $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
                         description: >-
                           The document type associated with the payment's document 
                           number. Accepted values are cpf, cnpj, passport, rg, 
@@ -299,35 +260,16 @@ paths:
                           The billing address associated with the payment. 
                           Note: billing_address is required only if the method 
                           is credit_card or boleto
-                        $ref: "#/components/schemas/Address"
+                        $ref: "../base/v1/entities.yml#/components/schemas/Address"
       responses:
-        '200':
-          description: Valid update request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessResponse"
+        '201':
+          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
         '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: "#/components/schemas/ErrorResponseInvalidJson"
-                  - $ref: "#/components/schemas/ErrorResponseMissingRequiredProperties"
-                  - $ref: "#/components/schemas/ErrorResponseInvaildProperties"
+          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
-          description: Auth header not provided
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseAuthNotProvided"
+          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
-          description: Not authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseNotAuthorized"
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
     put:
       summary: Notify Legiti when an order's status is updated.
       description: Update order status
@@ -347,38 +289,19 @@ paths:
                   type: string
                   description: The order's unique identifier within your platform
                 status:
-                  $ref: "#/components/schemas/OrderStatus"
+                  $ref: "../base/v1/enum.yml#/#/components/schemas/OrderStatus"
                 status_reason:
                   type: string
                   description: The reason for the status change
       responses:
         '200':
-          description: Valid update request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessResponse"
+          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
         '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: "#/components/schemas/ErrorResponseInvalidJson"
-                  - $ref: "#/components/schemas/ErrorResponseMissingRequiredProperties"
-                  - $ref: "#/components/schemas/ErrorResponseInvaildProperties"
+          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
-          description: Auth header not provided
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseAuthNotProvided"
+          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
-          description: Not authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseNotAuthorized"
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
 components:
   schemas:
     PostEvent:
@@ -399,49 +322,13 @@ components:
         - is_virtual
         - valid_from
         - valid_until
-    Address:
-      type: object
-      required:
-        - street_name
-        - street_number
-        - city
-        - zip_code
-        - state
-        - country
-      properties:
-        street_name:
-          type: string
-          description: The street of the address
-        street_number:
-          type: string
-          description: The street number of the address
-        city:
-          type: string
-          description: The city in which the address is located
-        zip_code:
-          type: string
-          description: The zip code (e.g. CEP) of the address
-        state:
-          type: string
-          description: The up to three-character ISO 3166-2 abbreviation of the state in which the address is located
-        country:
-          type: string
-          description: The two-character ISO 3166-2 country code in which the address is located
-        latitude:
-          type: number
-          format: float
-          description: The exact latitude of the address
-        longitude: 
-          type: number
-          format: float
-          description: The exact longitude of the address
     EventEntity:
       type: object
       properties:
         is_virtual:
           type: boolean
         venue:
-          $ref: "#/components/schemas/Address"
+          $ref: "../base/v1/entities.yml#/components/schemas/Address"
         organizer_ids:
           type: array
           items:
@@ -463,85 +350,6 @@ components:
         title:
           type: string
         event_start_datetime:
-          type: string
-    DocumentType:
-      type: string
-      enum:
-        - cpf
-        - cnpj
-        - passport
-        - rg
-        - rne
-        - other
-    OrderStatus:
-      type: string
-      description: >-
-        The status of the order. The allowed values are: 
-        approved, declined, pending, refunded, manual_analysis, 
-        cancelled, and other
-      enum:
-        - approved
-        - declined
-        - pending
-        - refunded
-        - manual_analysis
-        - cancelled
-        - other
-    SuccessResponse:
-      type: object
-      required:
-        - message
-      properties:
-        message:
-          type: string
-    ErrorResponseInvalidJson:
-      type: object
-      description: Request body contains invalid JSON
-      required:
-        - error_message
-        - error_code
-      properties:
-        error_message:
-          type: string
-        error_code:
-          type: number
-    ErrorResponseMissingRequiredProperties:
-      type: object
-      description: Request is missing required properties
-      required:
-        - error_message
-        - error_code
-      properties:
-        error_message:
-          type: object
-        error_code:
-          type: number
-    ErrorResponseInvaildProperties:
-      type: object
-      description: Request contains properties with incorrect types
-      required:
-        - error_message
-        - error_code
-      properties:
-        error_message:
-          type: object
-        error_code:
-          type: number
-    ErrorResponseAuthNotProvided:
-      type: object
-      description: Authorization header not present in request
-      required:
-        - message
-      properties:
-        message:
-          type: string
-    ErrorResponseNotAuthorized:
-      type: object
-      description: Provided API token not authorized to access this resource
-      required:
-        - Message
-      properties:
-        Message:
           type: string
   securitySchemes:
     bearerAuth:
