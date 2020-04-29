@@ -35,6 +35,8 @@ components:
         responses:
           '201':
             $ref: "./responses.yml#/components/schemas/Collection20xResponse"
+          '200':
+            $ref: "./responses.yml#/components/schemas/Collection20xResponse"
           '400':
             $ref: "./responses.yml#/components/schemas/400Response"
           '401':
@@ -115,6 +117,8 @@ components:
                       external_antifraud, internal_system, and other
         responses:
           '201':
+            $ref: "./responses.yml#/components/schemas/Collection20xResponse"
+          '200':
             $ref: "./responses.yml#/components/schemas/Collection20xResponse"
           '400':
             $ref: "./responses.yml#/components/schemas/400Response"
@@ -321,8 +325,6 @@ components:
         responses:
           '200':
             $ref: "./responses.yml#/components/schemas/Collection20xResponse"
-          '201':
-            $ref: "./responses.yml#/components/schemas/Collection20xResponse"
           '400':
             $ref: "./responses.yml#/components/schemas/400Response"
           '401':
@@ -358,6 +360,8 @@ components:
                       The type of user action that was taken. 
                       Accepted values are recovery and reset (case-insensitive)
         responses:
+          '201':
+            $ref: "./responses.yml#/components/schemas/Collection20xResponse"
           '200':
             $ref: "./responses.yml#/components/schemas/Collection20xResponse"
           '400':

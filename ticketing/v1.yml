@@ -259,15 +259,17 @@ paths:
                       - $ref: "#/components/schemas/OtherPayment"
       responses:
         '201':
-          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
+          $ref: "./responses.yml#/components/schemas/Collection20xResponse"
+        '200':
+          $ref: "./responses.yml#/components/schemas/Collection20xResponse"
         '400':
-          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+          $ref: "./responses.yml#/components/schemas/400Response"
         '401':
-          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+          $ref: "./responses.yml#/components/schemas/401Response"
         '403':
-          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+          $ref: "./responses.yml#/components/schemas/403Response"
         '503':
-          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
+          $ref: "./responses.yml#/components/schemas/503Response"
     put:
       summary: Notify Legiti when an order's status is updated.
       description: Update order status
@@ -343,9 +345,9 @@ paths:
                 recipient:
                   $ref: "#/components/schemas/Recipient"
       responses:
-        '200':
-          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '201':
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
+        '200':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '400':
           $ref: "../base/v1/responses.yml#/components/schemas/400Response"
@@ -391,8 +393,6 @@ paths:
                   $ref: "#/components/schemas/Recipient"
       responses:
         '200':
-          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
-        '201':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '400':
           $ref: "../base/v1/responses.yml#/components/schemas/400Response"

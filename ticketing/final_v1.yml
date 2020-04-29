@@ -705,7 +705,7 @@ paths:
                   description: The reason for the status change
       responses:
         "200":
-          $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/201"
+          $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/200"
         "400":
           $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/400"
         "401":
@@ -751,12 +751,12 @@ paths:
                     - rne
                     - other
                 phone_number:
-                  type: integer
+                  type: string
                   description: "The main phone number associated with the user  (numbers only;
                     country code not included).  Note: if phone_number is
                     provided, phone_country_code  is also required"
                 phone_country_code:
-                  type: integer
+                  type: string
                   description: "The international country code associated with the phone
                     number  (numbers only). Note: if phone_country_code is
                     provided,  phone_number is also required"
