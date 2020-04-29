@@ -152,64 +152,64 @@ components:
   UserEntity:
     type: object
     properties: 
-              id:
-                type: string
-                description: Your unique identifier for this user in your platform
-              email:
-                type: string
-                description: The main email associated with the user
-              document:
-                type: string
-                description: The document number associated with the user
-              document_type:
-                $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
-                description: >-
-                  The document type associated with the user's document number. 
-                  Accepted values are cpf, cnpj, passport, rg, rne, and other
-              phone_number:
-                type: integer
-                description: >-
-                  The main phone number associated with the user 
-                  (numbers only; country code not included). 
-                  Note: if phone_number is provided, phone_country_code 
-                  is also required
-              phone_country_code:
-                type: integer
-                description: >-
-                  The international country code associated with the phone number 
-                  (numbers only). Note: if phone_country_code is provided, 
-                  phone_number is also required
-              password_hash:
-                type: string
-                description: The secure (salted and hashed) password associated with the user
-              name:
-                type: string
-                description: The user's full name
-              gender:
-                type: string
-                enum:
-                  - male
-                  - female
-                  - other
-                  - undisclosed
-                description: >-
-                  The user's gender. Accepted values are: 
-                  male, female, other, and undisclosed
-              user_type:
-                type: string
-                enum:
-                  - consumer
-                  - service_provider
-                description: >- 
-                  The user's type in your platform. Accepted values are: 
-                  consumer, service_provider
-              creation_datetime:
-                type: string
-                format: date-time
-                description: The datetime of when the user account was created
-              address:
-                description: The address associated with the user
-                $ref: "../base/v1/entities.yml#/components/schemas/Address"
+      id:
+        type: string
+        description: Your unique identifier for this user in your platform
+      email:
+        type: string
+        description: The main email associated with the user
+      document:
+        type: string
+        description: The document number associated with the user
+      document_type:
+        $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
+        description: >-
+          The document type associated with the user's document number. 
+          Accepted values are cpf, cnpj, passport, rg, rne, and other
+      phone_number:
+        type: integer
+        description: >-
+          The main phone number associated with the user 
+          (numbers only; country code not included). 
+          Note: if phone_number is provided, phone_country_code 
+          is also required
+      phone_country_code:
+        type: integer
+        description: >-
+          The international country code associated with the phone number 
+          (numbers only). Note: if phone_country_code is provided, 
+          phone_number is also required
+      password_hash:
+        type: string
+        description: The secure (salted and hashed) password associated with the user
+      name:
+        type: string
+        description: The user's full name
+      gender:
+        type: string
+        enum:
+          - male
+          - female
+          - other
+          - undisclosed
+        description: >-
+          The user's gender. Accepted values are: 
+          male, female, other, and undisclosed
+      user_type:
+        type: string
+        enum:
+          - consumer
+          - service_provider
+        description: >- 
+          The user's type in your platform. Accepted values are: 
+          consumer, service_provider
+      creation_datetime:
+        type: string
+        format: date-time
+        description: The datetime of when the user account was created
+      address:
+        description: The address associated with the user
+        $ref: "../base/v1/entities.yml#/components/schemas/Address"
   User:
     post:
       summary: Notify Legiti any time a new user is created
@@ -248,6 +248,41 @@ components:
               $ref: "#/components/schema/UserEntity"
               required:
                 - id
+      responses:
+        '200':
+          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+        '400':
+          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+        '401':
+          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+        '403':
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+  Password:
+    post:
+      summary: Notify Legiti any time a user who is not logged in either resets or recovers their password
+      tags:
+        - password
+      operationId: password_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - recovery_email
+                - action_type
+              properties:
+                recovery_email:
+                  type: string
+                  description: The email used to recover or reset the password
+                action_type:
+                  type: string
+                  enum:
+                    - recovery
+                    - reset
+                  description: >-
+                    The type of user action that was taken. 
+                    Accepted values are recovery and reset (case-insensitive)
       responses:
         '200':
           $ref: "../base/v1/responses.yml#/components/schemas/200Responses"

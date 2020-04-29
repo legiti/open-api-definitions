@@ -303,6 +303,8 @@ paths:
     $ref: "../base/v1/entities.yml#/components/schemas/PaymentUpdate"
   /ticketing/v1/user:
     $ref: "../base/v1/entities.yml#/components/schemas/User"
+  /ticketing/v1/password:
+    $ref: "../base/v1/entities.yml#/components/schemas/Password"
 components:
   schemas:
     PostEvent:
