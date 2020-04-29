@@ -302,6 +302,8 @@ paths:
           $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
           $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+  /ticketing/v1/auth:
+    $ref: "../base/v1/entities.yml#/components/schemas/Auth"
 components:
   schemas:
     PostEvent:
