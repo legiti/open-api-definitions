@@ -28,6 +28,12 @@ paths:
             schema:
               $ref: "#/components/schemas/PostEvent"
       responses:
+        '200':
+          description: Valid Sandbox request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/SuccessResponse"
         '201':
           description: Valid create request
           content:
@@ -40,9 +46,7 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/ErrorResponseInvalidJson"
-                  - $ref: "#/components/schemas/ErrorResponseMissingRequiredProperties"
-                  - $ref: "#/components/schemas/ErrorResponseInvaildProperties"
+                  - $ref: "#/components/schemas/ErrorResponseAPI"
         '401':
           description: Auth header not provided
           content:
@@ -55,6 +59,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponseNotAuthorized"
+        '503':
+          description: Internal error on DB insertion
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseAPI"
           
     put:
       description: Send information to Legiti any time an event's information (description, venue, start/end time, etc...) is altered.
@@ -79,9 +89,7 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/ErrorResponseInvalidJson"
-                  - $ref: "#/components/schemas/ErrorResponseMissingRequiredProperties"
-                  - $ref: "#/components/schemas/ErrorResponseInvaildProperties"
+                  - $ref: "#/components/schemas/ErrorResponseAPI"
         '401':
           description: Auth header not provided
           content:
@@ -94,6 +102,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponseNotAuthorized"
+        '503':
+          description: Internal error on DB insertion
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseAPI"
 components:
   schemas:
     PostEvent:
@@ -186,18 +200,7 @@ components:
       properties:
         message:
           type: string
-    ErrorResponseInvalidJson:
-      type: object
-      description: Request body contains invalid JSON
-      required:
-        - error_message
-        - error_code
-      properties:
-        error_message:
-          type: string
-        error_code:
-          type: number
-    ErrorResponseMissingRequiredProperties:
+    ErrorResponseAPI:
       type: object
       description: Request is missing required properties
       required:
@@ -208,18 +211,7 @@ components:
           type: object
         error_code:
           type: number
-    ErrorResponseInvaildProperties:
-      type: object
-      description: Request contains properties with incorrect types
-      required:
-        - error_message
-        - error_code
-      properties:
-        error_message:
-          type: object
-        error_code:
-          type: number
-    ErrorResponseAuthNotProvided:
+    ErrorResponseNoAuthHeader:
       type: object
       description: Authorization header not present in request
       required:
@@ -227,7 +219,7 @@ components:
       properties:
         message:
           type: string
-    ErrorResponseNotAuthorized:
+    ErrorResponseAuthorizer:
       type: object
       description: Provided API token not authorized to access this resource
       required:
