@@ -13,8 +13,12 @@ info:
   version: "1.0"
   license:
     name: MIT
+  contact: 
+    name: Legiti Dev Team
+    url: http://www.docs.legiti.com
+    email: publishing@legiti.com
 servers:
-  - url: 'https://legiti-api.lgtcdn.net'
+  - url: "https://legiti-api.lgtcdn.net"
 paths:
   /ticketing/v1/event:
     post:
@@ -52,7 +56,7 @@ paths:
               $ref: "#/components/schemas/Event"
       responses:
         '200':
-          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
         '400':
           $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
@@ -114,7 +118,7 @@ paths:
                   type: string
                   description: The currency of the total_paid_value, as an ISO-4217 currency code
                 status:
-                  $ref: "../base/v1/enum.yml#/#/components/schemas/OrderStatus"
+                  $ref: "../base/v1/enums.yml#/components/schemas/OrderStatus"
                 tickets:
                   type: array
                   description: The purchased tickets
@@ -213,7 +217,7 @@ paths:
                           The applied interest rate - where 0 means no interest 
                           was applied and 1 means 100% monthly interest was applied
                       status:
-                        $ref: "../base/v1/enum.yml#/components/schemas/PaymentStatus"
+                        $ref: "../base/v1/enums.yml#/components/schemas/PaymentStatus"
                       document_type:
                         $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
                         description: >-
@@ -262,7 +266,7 @@ paths:
                         $ref: "../base/v1/entities.yml#/components/schemas/Address"
       responses:
         '201':
-          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
         '400':
           $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
@@ -290,13 +294,13 @@ paths:
                   type: string
                   description: The order's unique identifier within your platform
                 status:
-                  $ref: "../base/v1/enum.yml#/#/components/schemas/OrderStatus"
+                  $ref: "../base/v1/enums.yml#/components/schemas/OrderStatus"
                 status_reason:
                   type: string
                   description: The reason for the status change
       responses:
         '200':
-          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
         '400':
           $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':

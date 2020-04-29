@@ -34,15 +34,15 @@ components:
                       'login_failure', and 'logout' (case-insensitive)
         responses:
           '201':
-            $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+            $ref: "./responses.yml#/components/schemas/20xResponse"
           '400':
-            $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+            $ref: "./responses.yml#/components/schemas/400Response"
           '401':
-            $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+            $ref: "./responses.yml#/components/schemas/401Response"
           '403':
-            $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+            $ref: "./responses.yml#/components/schemas/403Response"
           '503':
-            $ref: "../base/v1/responses.yml#/components/schemas/503Response"
+            $ref: "./responses.yml#/components/schemas/503Response"
     Address:
       type: object
       required:
@@ -112,15 +112,15 @@ components:
                     external_antifraud, internal_system, and other
       responses:
         '201':
-          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+          $ref: "./responses.yml#/components/schemas/20xResponse"
         '400':
-          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+          $ref: "./responses.yml#/components/schemas/400Response"
         '401':
-          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+          $ref: "./responses.yml#/components/schemas/401Response"
         '403':
-          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+          $ref: "./responses.yml#/components/schemas/403Response"
         '503':
-          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
+          $ref: "./responses.yml#/components/schemas/503Response"
   PaymentUpdate:
     put:
       summary: Notify Legiti of payment status updates (supplied by your acquirer)
@@ -140,21 +140,21 @@ components:
                   type: string
                   description: The unique identifier for the payment within your platform
                 status:
-                  $ref: "../base/v1/enum.yml#/components/schemas/PaymentStatus"
+                  $ref: "./enum.yml#/components/schemas/PaymentStatus"
                 status_reason:
                   type: string
                   description: The reason for the status change
       responses:
         '200':
-          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+          $ref: "./responses.yml#/components/schemas/20xResponse"
         '400':
-          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+          $ref: "./responses.yml#/components/schemas/400Response"
         '401':
-          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+          $ref: "./responses.yml#/components/schemas/401Response"
         '403':
-          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+          $ref: "./responses.yml#/components/schemas/403Response"
         '503':
-          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
+          $ref: "./responses.yml#/components/schemas/503Response"
   UserEntity:
     type: object
     properties: 
@@ -168,7 +168,7 @@ components:
         type: string
         description: The document number associated with the user
       document_type:
-        $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
+        $ref: "./enums.yml#/components/schemas/DocumentType"
         description: >-
           The document type associated with the user's document number. 
           Accepted values are cpf, cnpj, passport, rg, rne, and other
@@ -215,7 +215,7 @@ components:
         description: The datetime of when the user account was created
       address:
         description: The address associated with the user
-        $ref: "../base/v1/entities.yml#/components/schemas/Address"
+        $ref: "./entities.yml#/components/schemas/Address"
   User:
     post:
       summary: Notify Legiti any time a new user is created
@@ -235,15 +235,15 @@ components:
                 - creation_datetime
       responses:
         '201':
-          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+          $ref: "./responses.yml#/components/schemas/20xResponse"
         '400':
-          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+          $ref: "./responses.yml#/components/schemas/400Response"
         '401':
-          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+          $ref: "./responses.yml#/components/schemas/401Response"
         '403':
-          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+          $ref: "./responses.yml#/components/schemas/403Response"
         '503':
-          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
+          $ref: "./responses.yml#/components/schemas/503Response"
     put:
       summary: Send information to Legiti any time a user's information (email, address, name, password, etc...) is altered.
       tags:
@@ -258,15 +258,15 @@ components:
                 - id
       responses:
         '200':
-          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+          $ref: "./responses.yml#/components/schemas/20xResponse"
         '400':
-          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+          $ref: "./responses.yml#/components/schemas/400Response"
         '401':
-          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+          $ref: "./responses.yml#/components/schemas/401Response"
         '403':
-          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+          $ref: "./responses.yml#/components/schemas/403Response"
         '503':
-          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
+          $ref: "./responses.yml#/components/schemas/503Response"
   Password:
     post:
       summary: Notify Legiti any time a user who is not logged in either resets or recovers their password
@@ -295,12 +295,12 @@ components:
                     Accepted values are recovery and reset (case-insensitive)
       responses:
         '200':
-          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+          $ref: "./responses.yml#/components/schemas/20xResponse"
         '400':
-          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+          $ref: "./responses.yml#/components/schemas/400Response"
         '401':
-          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+          $ref: "./responses.yml#/components/schemas/401Response"
         '403':
-          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+          $ref: "./responses.yml#/components/schemas/403Response"
         '503':
-          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
+          $ref: "./responses.yml#/components/schemas/503Response"
