@@ -26,16 +26,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PostEvent"
+              $ref: "#/components/schemas/Event"
       responses:
+        '200':
+          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
         '201':
-          $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
         '400':
           $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
           $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
-          $ref: "../base/v1/responses.yml#/components/schemas/403Response"      
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response" 
+        '503':
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response" 
     put:
       description: Send information to Legiti any time an event's information (description, venue, start/end time, etc...) is altered.
       tags:
@@ -45,7 +49,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PutEvent"
+              $ref: "#/components/schemas/Event"
       responses:
         '200':
           $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
@@ -55,6 +59,8 @@ paths:
           $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
           $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+        '503':
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response" 
   /ticketing/v1/order:
     post:
       summary: Notify Legiti any time a new order is created
@@ -307,25 +313,7 @@ paths:
     $ref: "../base/v1/entities.yml#/components/schemas/Password"
 components:
   schemas:
-    PostEvent:
-      $ref: "#/components/schemas/EventEntity/properties"
-      required:
-        - id
-        - title
-        - organizers
-        - is_virtual
-        - valid_from
-        - valid_until
-    PutEvent:
-      $ref: "#/components/schemas/EventEntity/properties"
-      required:
-        - id
-        - title
-        - organizers
-        - is_virtual
-        - valid_from
-        - valid_until
-    EventEntity:
+    Event:
       type: object
       properties:
         is_virtual:
