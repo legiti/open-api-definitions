@@ -65,7 +65,7 @@ paths:
                     $ref: "../base/v1/entities.yml#/components/schema/EvaluationPaymentEntity"
       responses:
           '200':
-            $ref: "../base/v1/responses.yml#/components/schemas/Eval200Response"
+            $ref: "../base/v1/responses.yml#/components/schemas/Evaluation200Response"
           '400':
             $ref: "../base/v1/responses.yml#/components/schemas/400Response"
           '401':
@@ -86,7 +86,7 @@ paths:
                         type: string
                       error_code:
                         type: number
-                  - $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+                  - $ref: "../base/v1/responses.yml#/components/schemas/ErrorResponseNotAuthorized"
           '503':
             $ref: "../base/v1/responses.yml#/components/schemas/503Response"
   /ticketing/v1/event:
