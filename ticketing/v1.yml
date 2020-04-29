@@ -269,6 +269,8 @@ paths:
           $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
           $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+        '503':
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
     put:
       summary: Notify Legiti when an order's status is updated.
       description: Update order status
@@ -301,6 +303,8 @@ paths:
           $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
           $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+        '503':
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
   /ticketing/v1/auth:
     $ref: "../base/v1/entities.yml#/components/schemas/Auth"
   /ticketing/v1/order/mark_fraudulent:

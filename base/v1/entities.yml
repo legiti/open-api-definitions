@@ -41,6 +41,8 @@ components:
             $ref: "../base/v1/responses.yml#/components/schemas/401Response"
           '403':
             $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+          '503':
+            $ref: "../base/v1/responses.yml#/components/schemas/503Response"
     Address:
       type: object
       required:
@@ -117,6 +119,8 @@ components:
           $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
           $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+        '503':
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
   PaymentUpdate:
     put:
       summary: Notify Legiti of payment status updates (supplied by your acquirer)
@@ -149,6 +153,8 @@ components:
           $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
           $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+        '503':
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
   UserEntity:
     type: object
     properties: 
@@ -236,6 +242,8 @@ components:
           $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
           $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+        '503':
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
     put:
       summary: Send information to Legiti any time a user's information (email, address, name, password, etc...) is altered.
       tags:
@@ -257,6 +265,8 @@ components:
           $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
           $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+        '503':
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
   Password:
     post:
       summary: Notify Legiti any time a user who is not logged in either resets or recovers their password
@@ -292,3 +302,5 @@ components:
           $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
           $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+        '503':
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
