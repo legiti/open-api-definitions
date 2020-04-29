@@ -1,6 +1,6 @@
 components:
   schemas:
-    200Responses:
+    20xResponse:
       description: Valid create request
       content:
         application/json:
@@ -32,6 +32,17 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorResponseNotAuthorized"
+    503Response:
+      type: object
+      description: Internal server error on DB insertion
+      required:
+        - error_message
+        - error_code
+      properties:
+        error_message:
+          type: object
+        error_code:
+          type: number
     ErrorResponseInvalidJson:
       type: object
       description: Request body contains invalid JSON
