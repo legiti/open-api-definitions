@@ -382,6 +382,106 @@ paths:
           $ref: "../base/v1/responses.yml#/components/schemas/403Response"
         '503':
           $ref: "../base/v1/responses.yml#/components/schemas/503Response"
+  /ticketing/v1/transfer:
+    post:
+      description: Notify Legiti any time a new transfer is created
+      tags:
+        - transfer
+      operationId: transfer_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - title
+                - organizers
+                - is_virtual
+                - event_start_datetime
+                - event_last_datetime
+              properties:
+                id:
+                  type: string
+                  description: Your platform's unique ID for describing the transfer
+                ticket_id:
+                  type: string
+                  description: Your platform's unique ID for the ticket being transferred
+                sender_user_id:
+                  type: string
+                  description: The user_id of the User account initiating the transfer
+                status:
+                  type: string
+                  enum:
+                    - pending
+                    - accepted
+                    - cancelled
+                    - rejected
+                  description: >-
+                    The status of the transfer (accepted values: 
+                    "pending" "accepted" "cancelled" "rejected")
+                recipient:
+                  $ref: "#/components/schemas/Recipient"
+      responses:
+        '200':
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
+        '201':
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
+        '400':
+          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+        '401':
+          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+        '403':
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response" 
+        '503':
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
+    put:
+      description: Send information to Legiti any time a transfer's information (generally status) is altered.
+      tags:
+        - transfer
+      operationId: transfer_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: string
+                  description: Your platform's unique ID for describing the transfer
+                ticket_id:
+                  type: string
+                  description: Your platform's unique ID for the ticket being transferred
+                sender_user_id:
+                  type: string
+                  description: The user_id of the User account initiating the transfer
+                status:
+                  type: string
+                  enum:
+                    - pending
+                    - accepted
+                    - cancelled
+                    - rejected
+                  description: >-
+                    The status of the transfer (accepted values: 
+                    "pending" "accepted" "cancelled" "rejected")
+                recipient:
+                  $ref: "#/components/schemas/Recipient"
+      responses:
+        '200':
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
+        '201':
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
+        '400':
+          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+        '401':
+          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+        '403':
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response" 
+        '503':
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
   /ticketing/v1/auth:
     $ref: "../base/v1/entities.yml#/components/schemas/Auth"
   /ticketing/v1/order/mark_fraudulent:
@@ -461,6 +561,28 @@ components:
         event_last_datetime:
           type: string
           format: date-time
+    Recipient:
+      type: object
+      description: The recipient of the transferred ticket
+      required:
+        - type
+        - id
+      properties:
+        type:
+          type: string
+          enum:
+            - email
+            - id
+          description: >-
+            The type of identifier that the ID field contains. 
+            Accepted values:"email"or "id" (where "id" corresponds 
+            to Your platform's user_id of the User account receiving 
+            the ticket in the transfer)
+        id:
+          type: string
+          description: >- 
+            The identifier for the recipient. If "type" is "email", 
+            this should be an email address. Otherwise, it should be a user_id.
   securitySchemes:
     bearerAuth:
       type: http
