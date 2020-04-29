@@ -372,6 +372,8 @@ paths:
                       - $ref: "#/components/schemas/BoletoPayment"
                       - $ref: "#/components/schemas/OtherPayment"
       responses:
+        "200":
+          $ref: "#/paths/~1ticketing~1v1~1event/post/responses/200"
         "201":
           $ref: "#/paths/~1ticketing~1v1~1event/post/responses/200"
         "400":
@@ -506,8 +508,6 @@ paths:
       responses:
         "200":
           $ref: "#/paths/~1ticketing~1v1~1event/post/responses/200"
-        "201":
-          $ref: "#/paths/~1ticketing~1v1~1event/post/responses/200"
         "400":
           $ref: "#/paths/~1ticketing~1v1~1evaluation/post/responses/400"
         "401":
@@ -547,7 +547,7 @@ paths:
                     limited to 'login_success',  'login_failure', and 'logout'
                     (case-insensitive)
       responses:
-        "201":
+        "200":
           description: Valid create request
           content:
             application/json:
@@ -558,6 +558,8 @@ paths:
                 properties:
                   message:
                     type: string
+        "201":
+          $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/200"
         "400":
           description: Invalid request
           content:
@@ -664,8 +666,10 @@ paths:
                     manual_analysis, chargeback,  external_antifraud,
                     internal_system, and other
       responses:
+        "200":
+          $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/200"
         "201":
-          $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/201"
+          $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/200"
         "400":
           $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/400"
         "401":
@@ -829,9 +833,9 @@ paths:
                       description: The exact longitude of the address
       responses:
         "200":
-          $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/201"
+          $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/200"
         "201":
-          $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/201"
+          $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/200"
         "400":
           $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/400"
         "401":
@@ -907,9 +911,7 @@ paths:
                     /schema/properties/address"
       responses:
         "200":
-          $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/201"
-        "201":
-          $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/201"
+          $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/200"
         "400":
           $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/400"
         "401":
@@ -946,7 +948,9 @@ paths:
                     recovery and reset (case-insensitive)
       responses:
         "200":
-          $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/201"
+          $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/200"
+        "201":
+          $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/200"
         "400":
           $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/400"
         "401":
