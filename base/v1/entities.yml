@@ -191,14 +191,14 @@ components:
                       The document type associated with the user's document number. 
                       Accepted values are cpf, cnpj, passport, rg, rne, and other
                   phone_number:
-                    type: integer
+                    type: string
                     description: >-
                       The main phone number associated with the user 
                       (numbers only; country code not included). 
                       Note: if phone_number is provided, phone_country_code 
                       is also required
                   phone_country_code:
-                    type: integer
+                    type: string
                     description: >-
                       The international country code associated with the phone number 
                       (numbers only). Note: if phone_country_code is provided, 
