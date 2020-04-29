@@ -301,6 +301,8 @@ paths:
     $ref: "../base/v1/entities.yml#/components/schemas/OrderMarkedFraudulent"
   /ticketing/v1/order/payment:
     $ref: "../base/v1/entities.yml#/components/schemas/PaymentUpdate"
+  /ticketing/v1/user:
+    $ref: "../base/v1/entities.yml#/components/schemas/User"
 components:
   schemas:
     PostEvent:
