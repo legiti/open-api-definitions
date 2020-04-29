@@ -22,4 +22,13 @@ components:
         - refunded
         - manual_analysis
         - cancelled
-        - other
+        - other,
+    PaymentStatus:
+      type: string
+      description: >- 
+        The status of the payment.
+        The allowed values are: approved, declined, and pending
+      enum:
+        - approved
+        - declined
+        - pending

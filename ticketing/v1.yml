@@ -207,14 +207,7 @@ paths:
                           The applied interest rate - where 0 means no interest 
                           was applied and 1 means 100% monthly interest was applied
                       status:
-                        type: string
-                        description: >- 
-                          The status of the payment.
-                          The allowed values are: approved, declined, and pending
-                        enum:
-                          - approved
-                          - declined
-                          - pending
+                        $ref: "../base/v1/enum.yml#/components/schemas/PaymentStatus"
                       document_type:
                         $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
                         description: >-
@@ -305,7 +298,9 @@ paths:
   /ticketing/v1/auth:
     $ref: "../base/v1/entities.yml#/components/schemas/Auth"
   /ticketing/v1/order/mark_fraudulent:
-    $ref: "../base/v1/entities.yml#/components/schemas/OrdersMarkedFraudulent"
+    $ref: "../base/v1/entities.yml#/components/schemas/OrderMarkedFraudulent"
+  /ticketing/v1/order/payment:
+    $ref: "../base/v1/entities.yml#/components/schemas/PaymentUpdate"
 components:
   schemas:
     PostEvent:

@@ -76,7 +76,7 @@ components:
           type: number
           format: float
           description: The exact longitude of the address
-  OrdersMarkedFraudulent:
+  OrderMarkedFraudulent:
     summary: Notify Legiti that an order was found to be fraudulent
     tags:
       - order
@@ -106,6 +106,37 @@ components:
                   The mechanism by which you identified the order as fraudulent. 
                   Current accepted values are acquirer, manual_analysis, chargeback, 
                   external_antifraud, internal_system, and other
+    responses:
+      '201':
+        $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+      '400':
+        $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+      '401':
+        $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+      '403':
+        $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+  PaymentUpdate:
+    summary: Notify Legiti of payment status updates (supplied by your acquirer)
+    tags:
+      - order
+    operationId: payment_update_put
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - id
+              - status
+            properties:
+              id:
+                type: string
+                description: The unique identifier for the payment within your platform
+              status:
+                $ref: "../base/v1/enum.yml#/components/schemas/PaymentStatus"
+              status_reason:
+                type: string
+                description: The reason for the status change
     responses:
       '201':
         $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
