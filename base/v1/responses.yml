@@ -33,16 +33,19 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorResponseNotAuthorized"
     503Response:
-      type: object
       description: Internal server error on DB insertion
-      required:
-        - error_message
-        - error_code
-      properties:
-        error_message:
-          type: object
-        error_code:
-          type: number
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - error_message
+              - error_code
+            properties:
+              error_message:
+                type: object
+              error_code:
+                type: number
     ErrorResponseInvalidJson:
       type: object
       description: Request body contains invalid JSON
