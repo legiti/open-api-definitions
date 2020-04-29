@@ -304,6 +304,8 @@ paths:
           $ref: "../base/v1/responses.yml#/components/schemas/403Response"
   /ticketing/v1/auth:
     $ref: "../base/v1/entities.yml#/components/schemas/Auth"
+  /ticketing/v1/order/mark_fraudulent:
+    $ref: "../base/v1/entities.yml#/components/schemas/OrdersMarkedFraudulent"
 components:
   schemas:
     PostEvent:

@@ -8,7 +8,7 @@ components:
         attempts for an account (as well as logouts)
       tags:
         - auth
-      operationId: authPost
+      operationId: auth_post
       requestBody:
         content:
           application/json:
@@ -76,3 +76,42 @@ components:
           type: number
           format: float
           description: The exact longitude of the address
+  OrdersMarkedFraudulent:
+    summary: Notify Legiti that an order was found to be fraudulent
+    tags:
+      - order
+    operationId: order_marked_fraudulent_post
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - order_id
+              - fraud_signal_type
+            properties:
+              order_id:
+                type: string
+                description: The order's unique identifier within your platform
+              fraud_signal_type:
+                type: string
+                enum:
+                  - acquirer
+                  - manual_analysis
+                  - chargeback
+                  - external_antifraud
+                  - internal_system
+                  - other
+                description: >-
+                  The mechanism by which you identified the order as fraudulent. 
+                  Current accepted values are acquirer, manual_analysis, chargeback, 
+                  external_antifraud, internal_system, and other
+    responses:
+      '201':
+        $ref: "../base/v1/responses.yml#/components/schemas/200Responses"
+      '400':
+        $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+      '401':
+        $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+      '403':
+        $ref: "../base/v1/responses.yml#/components/schemas/403Response"
