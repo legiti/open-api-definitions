@@ -32,3 +32,14 @@ components:
         - approved
         - declined
         - pending
+    LegitiDecision:
+      type: string
+      description: >-
+        Legiti's suggestion for treating this order. Will be one of: ["approve", "reject", "manual" or "unavailable"].
+        Note that "manual" will only be returned for Legiti customers that have an existing manual analysis flow, and
+        "unavailable" will only be returned in the case that your company is in the pilot phase of its Legiti integration.
+      enum:
+        - approve
+        - reject
+        - manual
+        - unavailable

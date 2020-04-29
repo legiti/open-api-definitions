@@ -34,7 +34,7 @@ components:
                       'login_failure', and 'logout' (case-insensitive)
         responses:
           '201':
-            $ref: "./responses.yml#/components/schemas/20xResponse"
+            $ref: "./responses.yml#/components/schemas/Collection20xResponse"
           '400':
             $ref: "./responses.yml#/components/schemas/400Response"
           '401':
@@ -112,7 +112,7 @@ components:
                     external_antifraud, internal_system, and other
       responses:
         '201':
-          $ref: "./responses.yml#/components/schemas/20xResponse"
+          $ref: "./responses.yml#/components/schemas/Collection20xResponse"
         '400':
           $ref: "./responses.yml#/components/schemas/400Response"
         '401':
@@ -146,7 +146,7 @@ components:
                   description: The reason for the status change
       responses:
         '200':
-          $ref: "./responses.yml#/components/schemas/20xResponse"
+          $ref: "./responses.yml#/components/schemas/Collection20xResponse"
         '400':
           $ref: "./responses.yml#/components/schemas/400Response"
         '401':
@@ -235,7 +235,7 @@ components:
                 - creation_datetime
       responses:
         '201':
-          $ref: "./responses.yml#/components/schemas/20xResponse"
+          $ref: "./responses.yml#/components/schemas/Collection20xResponse"
         '400':
           $ref: "./responses.yml#/components/schemas/400Response"
         '401':
@@ -258,7 +258,7 @@ components:
                 - id
       responses:
         '200':
-          $ref: "./responses.yml#/components/schemas/20xResponse"
+          $ref: "./responses.yml#/components/schemas/Collection20xResponse"
         '400':
           $ref: "./responses.yml#/components/schemas/400Response"
         '401':
@@ -295,7 +295,7 @@ components:
                     Accepted values are recovery and reset (case-insensitive)
       responses:
         '200':
-          $ref: "./responses.yml#/components/schemas/20xResponse"
+          $ref: "./responses.yml#/components/schemas/Collection20xResponse"
         '400':
           $ref: "./responses.yml#/components/schemas/400Response"
         '401':
@@ -304,3 +304,38 @@ components:
           $ref: "./responses.yml#/components/schemas/403Response"
         '503':
           $ref: "./responses.yml#/components/schemas/503Response"
+  EvaluationPaymentEntity:
+    type: object
+    properties:
+      document_type:
+        $ref: "./enums.yml#/components/schemas/DocumentType"
+        description: >-
+          The document type associated with the payment's document
+          number. Accepted values are cpf, cnpj, passport, rg,
+          rne, and other
+      document:
+        type: string
+        description: The document number associated with the payer
+      credit_card:
+        $ref: "#/components/schema/CreditCard"
+  CreditCard:
+    description: >-
+      The credit card associated with the payment.
+      Note: credit_card is required only if the method
+      is credit_card
+    type: object
+    required:
+      - first_six_digits
+      - last_four_digits
+    properties:
+      first_six_digits:
+        type: string
+        minLength: 6
+        maxLength: 6
+        description: The first six digits of the credit card number (should be only digits)
+      last_four_digits:
+        type: string
+        minLength: 4
+        maxLength: 4
+        description: The last four digits of the credit card number (should be only digits)
+      

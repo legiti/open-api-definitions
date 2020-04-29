@@ -20,6 +20,75 @@ info:
 servers:
   - url: "https://legiti-api.lgtcdn.net"
 paths:
+  /ticketing/v1/evaluation:
+    post:
+      description: Send requests to this endpoint whenever you have an order that you would like to get evaluated by Legiti.
+      tags:
+        - evaluation
+      operationId: ticketing_evaluation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - order_id
+                - user_id
+                - total_paid_value
+                - order_datetime
+                - event_ids
+                - payments
+              properties:
+                order_id:
+                  type: string
+                  description: The order's unique identifier within your platform
+                user_id:
+                  type: string
+                  description: Your unique identifier for this user in your platform
+                total_paid_value:
+                  type: number
+                  format: float
+                  description: The exact amount that the user paid
+                order_datetime:
+                  type: string
+                  format: date-time
+                  description: The order's date and time of sale in UTC following the ISO 8601 format (YYYY-MM-DDTHH:mm:ssZ)
+                event_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: Your platform's unique identifier for the event associated with the order
+                payments:
+                  type: array
+                  description: the payments used in this purchase
+                  items:
+                    $ref: "../base/v1/entities.yml#/components/schema/EvaluationPaymentEntity"
+      responses:
+          '200':
+            $ref: "../base/v1/responses.yml#/components/schemas/Eval200Response"
+          '400':
+            $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+          '401':
+            $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+          '403':
+            description: Unauthorized
+            content:
+              application/json:
+                schema:
+                  oneOf:
+                  - type: object
+                    description: Valid API key not authorized to access /evaluation resource
+                    required:
+                      - error_message
+                      - error_code
+                    properties:
+                      error_message:
+                        type: string
+                      error_code:
+                        type: number
+                  - $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+          '503':
+            $ref: "../base/v1/responses.yml#/components/schemas/503Response"
   /ticketing/v1/event:
     post:
       description: Notify Legiti any time a new event is created.
@@ -33,9 +102,9 @@ paths:
               $ref: "#/components/schemas/Event"
       responses:
         '200':
-          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '201':
-          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '400':
           $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
@@ -56,7 +125,7 @@ paths:
               $ref: "#/components/schemas/Event"
       responses:
         '200':
-          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '400':
           $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
@@ -266,7 +335,7 @@ paths:
                         $ref: "../base/v1/entities.yml#/components/schemas/Address"
       responses:
         '201':
-          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '400':
           $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
@@ -300,7 +369,7 @@ paths:
                   description: The reason for the status change
       responses:
         '200':
-          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '400':
           $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
@@ -323,17 +392,18 @@ components:
   schemas:
     Event:
       type: object
+      required:
+        - id
+        - title
+        - organizers
+        - is_virtual
+        - event_start_datetime
+        - event_last_datetime
       properties:
         is_virtual:
           type: boolean
         venue:
           $ref: "../base/v1/entities.yml#/components/schemas/Address"
-        organizer_ids:
-          type: array
-          items:
-            type: string
-        event_last_datetime:
-          type: string
         organizers:
           type: array
           items:
@@ -350,6 +420,10 @@ components:
           type: string
         event_start_datetime:
           type: string
+          format: date-time
+        event_last_datetime:
+          type: string
+          format: date-time
   securitySchemes:
     bearerAuth:
       type: http
