@@ -189,6 +189,8 @@ paths:
                     type: string
                 currency:
                   type: string
+                  maxLength: 3
+                  minLength: 3
                   description: The currency of the total_paid_value, as an ISO-4217 currency code
                 status:
                   $ref: "../base/v1/enums.yml#/components/schemas/OrderStatus"

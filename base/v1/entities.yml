@@ -68,9 +68,12 @@ components:
         state:
           type: string
           description: The up to three-character ISO 3166-2 abbreviation of the state in which the address is located
+          maxLength: 3
         country:
           type: string
           description: The two-character ISO 3166-2 country code in which the address is located
+          maxLength: 2
+          minLength: 2
         latitude:
           type: number
           format: float
