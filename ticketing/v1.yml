@@ -60,50 +60,33 @@ paths:
                   description: Your platform's unique identifier for the event associated with the order
                 payments:
                   type: array
-                  items:
-                    type: object
-                    properties:
-                      document_type:
-                        $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
-                        description: >-
-                          The document type associated with the payment's document
-                          number. Accepted values are cpf, cnpj, passport, rg,
-                          rne, and other
-                      document:
-                        type: string
-                        description: The document number associated with the payer
-                      credit_card:
-                        type: object
-                        description: >-
-                          The credit card associated with the payment.
-                          Note: credit_card is required only if the method
-                          is credit_card
-                        required:
-                          - first_six_digits
-                          - last_four_digits
-                        properties:
-                          first_six_digits:
-                            type: string
-                            minLength: 6
-                            maxLength: 6
-                            description: The first six digits of the credit card number (should be only digits)
-                          last_four_digits:
-                            type: string
-                            minLength: 4
-                            maxLength: 4
-                            description: The last four digits of the credit card number (should be only digits)
                   description: the payments used in this purchase
+                  items:
+                    $ref: "../base/v1/entities.yml#/components/schema/EvaluationPaymentEntity"
       responses:
           '200':
-            $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
-          '201':
-            $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
+            $ref: "../base/v1/responses.yml#/components/schemas/Eval200Response"
           '400':
             $ref: "../base/v1/responses.yml#/components/schemas/400Response"
           '401':
             $ref: "../base/v1/responses.yml#/components/schemas/401Response"
           '403':
-            $ref: "../base/v1/responses.yml#/components/schemas/403Response" 
+            description: Unauthorized
+            content:
+              application/json:
+                schema:
+                  oneOf:
+                  - type: object
+                    description: Valid API key not authorized to access /evaluation resource
+                    required:
+                      - error_message
+                      - error_code
+                    properties:
+                      error_message:
+                        type: string
+                      error_code:
+                        type: number
+                  - $ref: "../base/v1/responses.yml#/components/schemas/403Response"
           '503':
             $ref: "../base/v1/responses.yml#/components/schemas/503Response"
   /ticketing/v1/event:
@@ -119,9 +102,9 @@ paths:
               $ref: "#/components/schemas/Event"
       responses:
         '200':
-          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '201':
-          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '400':
           $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
@@ -142,7 +125,7 @@ paths:
               $ref: "#/components/schemas/Event"
       responses:
         '200':
-          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '400':
           $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
@@ -352,7 +335,7 @@ paths:
                         $ref: "../base/v1/entities.yml#/components/schemas/Address"
       responses:
         '201':
-          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '400':
           $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
@@ -386,7 +369,7 @@ paths:
                   description: The reason for the status change
       responses:
         '200':
-          $ref: "../base/v1/responses.yml#/components/schemas/20xResponse"
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '400':
           $ref: "../base/v1/responses.yml#/components/schemas/400Response"
         '401':
