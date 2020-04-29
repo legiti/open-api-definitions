@@ -111,6 +111,8 @@ components:
                       Current accepted values are acquirer, manual_analysis, chargeback, 
                       external_antifraud, internal_system, and other
         responses:
+          '200':
+            $ref: "./responses.yml#/components/schemas/Collection20xResponse"
           '201':
             $ref: "./responses.yml#/components/schemas/Collection20xResponse"
           '400':
