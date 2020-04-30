@@ -14,6 +14,7 @@ components:
           content:
             application/json:
               schema:
+                title: body_auth
                 type: object
                 required:
                   - user_id
@@ -46,6 +47,7 @@ components:
           '503':
             $ref: "./responses.yml#/components/schemas/503Response"
     Address:
+      title: address
       type: object
       required:
         - street_name
@@ -94,6 +96,7 @@ components:
           content:
             application/json:
               schema:
+                title: body_order_mark_fraudulent
                 type: object
                 required:
                   - order_id
@@ -120,8 +123,6 @@ components:
             $ref: "./responses.yml#/components/schemas/Collection20xResponse"
           '201':
             $ref: "./responses.yml#/components/schemas/Collection20xResponse"
-          '200':
-            $ref: "./responses.yml#/components/schemas/Collection20xResponse"
           '400':
             $ref: "./responses.yml#/components/schemas/400Response"
           '401':
@@ -140,6 +141,7 @@ components:
           content:
             application/json:
               schema:
+                title: body_order_payment_put
                 type: object
                 required:
                   - id
@@ -174,6 +176,7 @@ components:
           content:
             application/json:
               schema:
+                title: body_user_post
                 type: object
                 required:
                   - id
@@ -238,6 +241,7 @@ components:
                     format: date-time
                     description: The datetime of when the user account was created
                   address:
+                    title: user_address
                     description: The address associated with the user
                     $ref: "./entities.yml#/components/schemas/Address"
         responses:
@@ -262,6 +266,7 @@ components:
           content:
             application/json:
               schema:
+                title: body_user_put
                 type: object
                 required:
                   - id
@@ -345,6 +350,7 @@ components:
           content:
             application/json:
               schema:
+                title: body_password
                 type: object
                 required:
                   - recovery_email

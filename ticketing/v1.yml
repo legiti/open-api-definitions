@@ -30,6 +30,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_ticketing_evaluation
               type: object
               required:
                 - order_id
@@ -75,8 +76,10 @@ paths:
             content:
               application/json:
                 schema:
+                  title: response_evaluation_unauthorized
                   oneOf:
                   - type: object
+                    title: response_forbidden
                     description: Valid API key not authorized to access /evaluation resource
                     required:
                       - error_message
@@ -99,6 +102,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_event_post
               oneOf:
                 - $ref: "#/components/schemas/VirtualEvent"
                 - $ref: "#/components/schemas/PhysicalEvent"
@@ -124,6 +128,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_event_put
               oneOf:
                 - $ref: "#/components/schemas/VirtualEvent"
                 - $ref: "#/components/schemas/PhysicalEvent"
@@ -150,6 +155,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_order_post
               type: object
               required:
                 - id
@@ -195,6 +201,7 @@ paths:
                 status:
                   $ref: "../base/v1/enums.yml#/components/schemas/OrderStatus"
                 tickets:
+                  title: tickets
                   type: array
                   description: The purchased tickets
                   items:
@@ -229,6 +236,7 @@ paths:
                         type: string
                         description: The ID of the Event the ticket is associated with
                       guest:
+                        title: guest
                         type: object
                         description: The guest with whom the ticket is associated
                         required:
@@ -242,14 +250,11 @@ paths:
                             description: The name of the user with whom the ticket is associated
                           document_type:
                             $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
-                            description: >-
-                              The document type associated with the user's document 
-                              number. Accepted values are cpf, cnpj, passport, 
-                              rg, rne, and other
                           document:
                             type: string
                             description: The document number associated with the user
                 payments:
+                  title: order_payment
                   type: array
                   description: The payments used in this purchase
                   items:
@@ -261,8 +266,6 @@ paths:
         '200':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '201':
-          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
-        '200':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
         '400':
           $ref: "../base/v1/responses.yml#/components/schemas/400Response"
@@ -282,6 +285,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_order_put
               type: object
               required:
                 - id
@@ -316,6 +320,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_transfer_post
               type: object
               required:
                 - id
@@ -368,6 +373,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_transfer_put
               type: object
               required:
                 - id
@@ -417,6 +423,7 @@ paths:
 components:
   schemas:
     VirtualEvent:
+      title: virtual_event
       type: object
       required:
         - id
@@ -449,6 +456,7 @@ components:
           type: string
           format: date-time
     PhysicalEvent:
+      title: physical_event
       type: object
       required:
         - id
@@ -506,6 +514,7 @@ components:
             The identifier for the recipient. If "type" is "email", 
             this should be an email address. Otherwise, it should be a user_id.
     CreditCardPayment:
+      title: payment_credit_card
       type: object
       required:
         - id
@@ -595,6 +604,7 @@ components:
             is credit_card or boleto
           $ref: "../base/v1/entities.yml#/components/schemas/Address"
     BoletoPayment:
+      title: payment_boleto
       type: object
       required:
         - id
@@ -652,6 +662,7 @@ components:
             is credit_card or boleto
           $ref: "../base/v1/entities.yml#/components/schemas/Address"
     OtherPayment:
+      title: payment_other
       type: object
       required:
         - id

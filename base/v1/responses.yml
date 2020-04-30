@@ -5,6 +5,7 @@ components:
       content:
         application/json:
           schema:
+            title: response_collection_ok
             type: object
             required:
               - message
@@ -16,6 +17,7 @@ components:
       content:
         application/json:
           schema:
+            title: response_invalid_request
             oneOf:
               - $ref: "#/components/schemas/ErrorResponseInvalidJson"
               - $ref: "#/components/schemas/ErrorResponseMissingRequiredProperties"
@@ -37,6 +39,7 @@ components:
       content:
         application/json:
           schema:
+            title: response_internal_error
             type: object
             required:
               - error_message
@@ -51,6 +54,7 @@ components:
       content:
         application/json:
           schema:
+            title: reponse_evaluation_ok
             type: object
             required:
               - legiti_decision
@@ -61,6 +65,7 @@ components:
                 type: string
                 description: Optional field used to provide further information on `legiti_decision`.
     ErrorResponseInvalidJson:
+      title: response_invalid_json
       type: object
       description: Request body contains invalid JSON
       required:
@@ -72,6 +77,7 @@ components:
         error_code:
           type: number
     ErrorResponseMissingRequiredProperties:
+      title: response_missing_required_properties
       type: object
       description: Request is missing required properties
       required:
@@ -83,6 +89,7 @@ components:
         error_code:
           type: number
     ErrorResponseInvalidProperties:
+      title: response_invalid_property_type
       type: object
       description: Request contains properties with incorrect types
       required:
@@ -94,6 +101,7 @@ components:
         error_code:
           type: number
     ErrorResponseAuthNotProvided:
+      title: response_no_auth
       type: object
       description: Authorization header not present in request
       required:
@@ -102,6 +110,7 @@ components:
         message:
           type: string
     ErrorResponseNotAuthorized:
+      title: response_not_authorized
       type: object
       description: Provided API token not authorized to access this resource
       required:
