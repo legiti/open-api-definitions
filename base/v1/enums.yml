@@ -2,6 +2,10 @@ components:
   schemas:
     DocumentType:
       type: string
+      description: >-
+        The document type associated with the user's document 
+        number. Accepted values are cpf, cnpj, passport, 
+        rg, rne, and other
       enum:
         - cpf
         - cnpj
