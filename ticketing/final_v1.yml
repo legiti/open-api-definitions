@@ -30,6 +30,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_ticketing_evaluation
               type: object
               required:
                 - order_id
@@ -70,6 +71,7 @@ paths:
           content:
             application/json:
               schema:
+                title: reponse_evaluation_ok
                 type: object
                 required:
                   - legiti_decision
@@ -97,8 +99,10 @@ paths:
           content:
             application/json:
               schema:
+                title: response_invalid_request
                 oneOf:
-                  - type: object
+                  - title: response_invalid_json
+                    type: object
                     description: Request body contains invalid JSON
                     required:
                       - error_message
@@ -108,7 +112,8 @@ paths:
                         type: string
                       error_code:
                         type: number
-                  - type: object
+                  - title: response_missing_required_properties
+                    type: object
                     description: Request is missing required properties
                     required:
                       - error_message
@@ -118,7 +123,8 @@ paths:
                         type: object
                       error_code:
                         type: number
-                  - type: object
+                  - title: response_invalid_property_type
+                    type: object
                     description: Request contains properties with incorrect types
                     required:
                       - error_message
@@ -133,6 +139,7 @@ paths:
           content:
             application/json:
               schema:
+                title: response_no_auth
                 type: object
                 description: Authorization header not present in request
                 required:
@@ -145,8 +152,10 @@ paths:
           content:
             application/json:
               schema:
+                title: response_evaluation_unauthorized
                 oneOf:
                   - type: object
+                    title: response_forbidden
                     description: Valid API key not authorized to access /evaluation resource
                     required:
                       - error_message
@@ -156,7 +165,8 @@ paths:
                         type: string
                       error_code:
                         type: number
-                  - type: object
+                  - title: response_not_authorized
+                    type: object
                     description: Provided API token not authorized to access this resource
                     required:
                       - Message
@@ -168,6 +178,7 @@ paths:
           content:
             application/json:
               schema:
+                title: response_internal_error
                 type: object
                 required:
                   - error_message
@@ -188,14 +199,15 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: "#/components/schemas/VirtualEvent"
-                - $ref: "#/components/schemas/PhysicalEvent"
+                - $ref: "#/components/schemas/virtual_event"
+                - $ref: "#/components/schemas/physical_event"
       responses:
         "200":
           description: Valid create request
           content:
             application/json:
               schema:
+                title: response_collection_ok
                 type: object
                 required:
                   - message
@@ -213,6 +225,7 @@ paths:
           content:
             application/json:
               schema:
+                title: response_not_authorized
                 type: object
                 description: Provided API token not authorized to access this resource
                 required:
@@ -232,9 +245,11 @@ paths:
         content:
           application/json:
             schema:
+              title: body_event_put
+              type: object
               oneOf:
-                - $ref: "#/components/schemas/VirtualEvent"
-                - $ref: "#/components/schemas/PhysicalEvent"
+                - $ref: "#/components/schemas/virtual_event"
+                - $ref: "#/components/schemas/physical_event"
       responses:
         "200":
           $ref: "#/paths/~1ticketing~1v1~1event/post/responses/200"
@@ -257,6 +272,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_order_post
               type: object
               required:
                 - id
@@ -312,6 +328,7 @@ paths:
                     - cancelled
                     - other,
                 tickets:
+                  title: tickets
                   type: array
                   description: The purchased tickets
                   items:
@@ -347,6 +364,7 @@ paths:
                         type: string
                         description: The ID of the Event the ticket is associated with
                       guest:
+                        title: guest
                         type: object
                         description: The guest with whom the ticket is associated
                         required:
@@ -359,18 +377,19 @@ paths:
                             type: string
                             description: The name of the user with whom the ticket is associated
                           document_type:
-                            $ref: "#/components/schemas/CreditCardPayment/properties/document_type"
+                            $ref: "#/components/schemas/payment_credit_card/properties/document_type"
                           document:
                             type: string
                             description: The document number associated with the user
                 payments:
+                  title: order_payment
                   type: array
                   description: The payments used in this purchase
                   items:
                     oneOf:
-                      - $ref: "#/components/schemas/CreditCardPayment"
-                      - $ref: "#/components/schemas/BoletoPayment"
-                      - $ref: "#/components/schemas/OtherPayment"
+                      - $ref: "#/components/schemas/payment_credit_card"
+                      - $ref: "#/components/schemas/payment_boleto"
+                      - $ref: "#/components/schemas/payment_other"
       responses:
         "200":
           $ref: "#/paths/~1ticketing~1v1~1event/post/responses/200"
@@ -394,6 +413,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_order_put
               type: object
               required:
                 - id
@@ -429,6 +449,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_transfer_post
               type: object
               required:
                 - id
@@ -481,6 +502,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_transfer_put
               type: object
               required:
                 - id
@@ -529,6 +551,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_auth
               type: object
               required:
                 - user_id
@@ -552,6 +575,7 @@ paths:
           content:
             application/json:
               schema:
+                title: response_collection_ok
                 type: object
                 required:
                   - message
@@ -565,8 +589,10 @@ paths:
           content:
             application/json:
               schema:
+                title: response_invalid_request
                 oneOf:
-                  - type: object
+                  - title: response_invalid_json
+                    type: object
                     description: Request body contains invalid JSON
                     required:
                       - error_message
@@ -576,7 +602,8 @@ paths:
                         type: string
                       error_code:
                         type: number
-                  - type: object
+                  - title: response_missing_required_properties
+                    type: object
                     description: Request is missing required properties
                     required:
                       - error_message
@@ -586,7 +613,8 @@ paths:
                         type: object
                       error_code:
                         type: number
-                  - type: object
+                  - title: response_invalid_property_type
+                    type: object
                     description: Request contains properties with incorrect types
                     required:
                       - error_message
@@ -601,6 +629,7 @@ paths:
           content:
             application/json:
               schema:
+                title: response_no_auth
                 type: object
                 description: Authorization header not present in request
                 required:
@@ -613,6 +642,7 @@ paths:
           content:
             application/json:
               schema:
+                title: response_not_authorized
                 type: object
                 description: Provided API token not authorized to access this resource
                 required:
@@ -625,6 +655,7 @@ paths:
           content:
             application/json:
               schema:
+                title: response_internal_error
                 type: object
                 required:
                   - error_message
@@ -644,6 +675,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_order_mark_fraudulent
               type: object
               required:
                 - order_id
@@ -688,6 +720,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_order_payment_put
               type: object
               required:
                 - id
@@ -728,6 +761,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_user_post
               type: object
               required:
                 - id
@@ -747,6 +781,8 @@ paths:
                   description: The document number associated with the user
                 document_type:
                   type: string
+                  description: The document type associated with the user's document  number.
+                    Accepted values are cpf, cnpj, passport,  rg, rne, and other
                   enum:
                     - cpf
                     - cnpj
@@ -791,6 +827,7 @@ paths:
                   format: date-time
                   description: The datetime of when the user account was created
                 address:
+                  title: address
                   type: object
                   required:
                     - street_name
@@ -854,6 +891,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_user_put
               type: object
               required:
                 - id
@@ -931,6 +969,7 @@ paths:
         content:
           application/json:
             schema:
+              title: body_password
               type: object
               required:
                 - recovery_email
@@ -961,7 +1000,8 @@ paths:
           $ref: "#/paths/~1ticketing~1v1~1auth/post/responses/503"
 components:
   schemas:
-    VirtualEvent:
+    virtual_event:
+      title: virtual_event
       type: object
       required:
         - id
@@ -993,7 +1033,8 @@ components:
         event_last_datetime:
           type: string
           format: date-time
-    PhysicalEvent:
+    physical_event:
+      title: physical_event
       type: object
       required:
         - id
@@ -1007,6 +1048,7 @@ components:
         is_virtual:
           type: boolean
         venue:
+          title: address
           type: object
           required:
             - street_name
@@ -1086,7 +1128,8 @@ components:
           type: string
           description: The identifier for the recipient. If "type" is "email",  this
             should be an email address. Otherwise, it should be a user_id.
-    CreditCardPayment:
+    payment_credit_card:
+      title: payment_credit_card
       type: object
       required:
         - id
@@ -1136,6 +1179,8 @@ components:
             - pending
         document_type:
           type: string
+          description: The document type associated with the user's document  number.
+            Accepted values are cpf, cnpj, passport,  rg, rne, and other
           enum:
             - cpf
             - cnpj
@@ -1178,8 +1223,9 @@ components:
               type: string
               description: The credit card holder's full name
         billing_address:
-          $ref: "#/components/schemas/PhysicalEvent/properties/venue"
-    BoletoPayment:
+          $ref: "#/components/schemas/physical_event/properties/venue"
+    payment_boleto:
+      title: payment_boleto
       type: object
       required:
         - id
@@ -1219,15 +1265,16 @@ components:
           description: The applied interest rate - where 0 means no interest  was applied
             and 1 means 100% monthly interest was applied
         status:
-          $ref: "#/components/schemas/CreditCardPayment/properties/status"
+          $ref: "#/components/schemas/payment_credit_card/properties/status"
         document_type:
-          $ref: "#/components/schemas/CreditCardPayment/properties/document_type"
+          $ref: "#/components/schemas/payment_credit_card/properties/document_type"
         document:
           type: string
           description: The document number associated with the payer
         billing_address:
-          $ref: "#/components/schemas/PhysicalEvent/properties/venue"
-    OtherPayment:
+          $ref: "#/components/schemas/physical_event/properties/venue"
+    payment_other:
+      title: payment_other
       type: object
       required:
         - id
@@ -1266,14 +1313,14 @@ components:
           description: The applied interest rate - where 0 means no interest  was applied
             and 1 means 100% monthly interest was applied
         status:
-          $ref: "#/components/schemas/CreditCardPayment/properties/status"
+          $ref: "#/components/schemas/payment_credit_card/properties/status"
         document_type:
-          $ref: "#/components/schemas/CreditCardPayment/properties/document_type"
+          $ref: "#/components/schemas/payment_credit_card/properties/document_type"
         document:
           type: string
           description: The document number associated with the payer
         billing_address:
-          $ref: "#/components/schemas/PhysicalEvent/properties/venue"
+          $ref: "#/components/schemas/physical_event/properties/venue"
   securitySchemes:
     bearerAuth:
       type: http
