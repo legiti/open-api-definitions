@@ -104,8 +104,8 @@ paths:
             schema:
               title: body_event_post
               oneOf:
-                - $ref: "#/components/schemas/VirtualEvent"
-                - $ref: "#/components/schemas/PhysicalEvent"
+                - $ref: "#/components/schemas/virtual_event"
+                - $ref: "#/components/schemas/physical_event"
       responses:
         '200':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
@@ -130,8 +130,8 @@ paths:
             schema:
               title: body_event_put
               oneOf:
-                - $ref: "#/components/schemas/VirtualEvent"
-                - $ref: "#/components/schemas/PhysicalEvent"
+                - $ref: "#/components/schemas/virtual_event"
+                - $ref: "#/components/schemas/physical_event"
       responses:
         '200':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
@@ -259,9 +259,9 @@ paths:
                   description: The payments used in this purchase
                   items:
                     oneOf:
-                      - $ref: "#/components/schemas/CreditCardPayment"
-                      - $ref: "#/components/schemas/BoletoPayment"
-                      - $ref: "#/components/schemas/OtherPayment"
+                      - $ref: "#/components/schemas/payment_credit_card"
+                      - $ref: "#/components/schemas/payment_boleto"
+                      - $ref: "#/components/schemas/payment_other"
       responses:
         '200':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
@@ -422,7 +422,7 @@ paths:
     $ref: "../base/v1/entities.yml#/components/schemas/Password"
 components:
   schemas:
-    VirtualEvent:
+    virtual_event:
       title: virtual_event
       type: object
       required:
@@ -455,7 +455,7 @@ components:
         event_last_datetime:
           type: string
           format: date-time
-    PhysicalEvent:
+    physical_event:
       title: physical_event
       type: object
       required:
@@ -513,7 +513,7 @@ components:
           description: >- 
             The identifier for the recipient. If "type" is "email", 
             this should be an email address. Otherwise, it should be a user_id.
-    CreditCardPayment:
+    payment_credit_card:
       title: payment_credit_card
       type: object
       required:
@@ -603,7 +603,7 @@ components:
             Note: billing_address is required only if the method 
             is credit_card or boleto
           $ref: "../base/v1/entities.yml#/components/schemas/Address"
-    BoletoPayment:
+    payment_boleto:
       title: payment_boleto
       type: object
       required:
@@ -661,7 +661,7 @@ components:
             Note: billing_address is required only if the method 
             is credit_card or boleto
           $ref: "../base/v1/entities.yml#/components/schemas/Address"
-    OtherPayment:
+    payment_other:
       title: payment_other
       type: object
       required:
