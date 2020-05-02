@@ -145,9 +145,9 @@ components:
             The applied interest rate - where 0 means no interest
             was applied and 1 means 100% monthly interest was applied
         status:
-          $ref: "../base/v1/enums.yml#/components/schemas/PaymentStatus"
+          $ref: "./enums.yml#/components/schemas/PaymentStatus"
         document_type:
-          $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
+          $ref: "./enums.yml#/components/schemas/DocumentType"
           description: >-
             The document type associated with the payment's document
             number. Accepted values are cpf, cnpj, passport, rg,
@@ -191,7 +191,7 @@ components:
             The billing address associated with the payment.
             Note: billing_address is required only if the method
             is credit_card or boleto
-          $ref: "../base/v1/entities.yml#/components/schemas/Address"
+          $ref: "./entities.yml#/components/schemas/Address"
     payment_boleto:
       title: payment_boleto
       type: object
@@ -234,9 +234,9 @@ components:
             The applied interest rate - where 0 means no interest
             was applied and 1 means 100% monthly interest was applied
         status:
-          $ref: "../base/v1/enums.yml#/components/schemas/PaymentStatus"
+          $ref: "./enums.yml#/components/schemas/PaymentStatus"
         document_type:
-          $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
+          $ref: "./enums.yml#/components/schemas/DocumentType"
           description: >-
             The document type associated with the payment's document
             number. Accepted values are cpf, cnpj, passport, rg,
@@ -249,7 +249,7 @@ components:
             The billing address associated with the payment.
             Note: billing_address is required only if the method
             is credit_card or boleto
-          $ref: "../base/v1/entities.yml#/components/schemas/Address"
+          $ref: "./entities.yml#/components/schemas/Address"
     payment_other:
       title: payment_other
       type: object
@@ -291,9 +291,9 @@ components:
             The applied interest rate - where 0 means no interest
             was applied and 1 means 100% monthly interest was applied
         status:
-          $ref: "../base/v1/enums.yml#/components/schemas/PaymentStatus"
+          $ref: "./enums.yml#/components/schemas/PaymentStatus"
         document_type:
-          $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
+          $ref: "./enums.yml#/components/schemas/DocumentType"
           description: >-
             The document type associated with the payment's document
             number. Accepted values are cpf, cnpj, passport, rg,
@@ -306,7 +306,7 @@ components:
             The billing address associated with the payment.
             Note: billing_address is required only if the method
             is credit_card or boleto
-          $ref: "../base/v1/entities.yml#/components/schemas/Address"
+          $ref: "./entities.yml#/components/schemas/Address"
     body_order_put:
       title: body_order_put
       type: object
@@ -318,7 +318,7 @@ components:
           type: string
           description: The order's unique identifier within your platform
         status:
-          $ref: "../base/v1/enums.yml#/components/schemas/OrderStatus"
+          $ref: "./enums.yml#/components/schemas/OrderStatus"
         status_reason:
           type: string
           description: The reason for the status change
