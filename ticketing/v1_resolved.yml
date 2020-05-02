@@ -377,7 +377,7 @@ paths:
                             type: string
                             description: The name of the user with whom the ticket is associated
                           document_type:
-                            $ref: "#/components/schemas/payment_credit_card/properties/document_type"
+                            $ref: "../base/v1/entities.yml#/components/schemas/payment_credit_card/properties/document_type"
                           document:
                             type: string
                             description: The document number associated with the user
@@ -387,9 +387,9 @@ paths:
                   description: The payments used in this purchase
                   items:
                     oneOf:
-                      - $ref: "#/components/schemas/payment_credit_card"
-                      - $ref: "#/components/schemas/payment_boleto"
-                      - $ref: "#/components/schemas/payment_other"
+                      - $ref: "../base/v1/entities.yml#/components/schemas/payment_credit_card"
+                      - $ref: "../base/v1/entities.yml#/components/schemas/payment_boleto"
+                      - $ref: "../base/v1/entities.yml#/components/schemas/payment_other"
       responses:
         "200":
           $ref: "#/paths/~1ticketing~1v1~1event/post/responses/200"
@@ -1265,9 +1265,9 @@ components:
           description: The applied interest rate - where 0 means no interest  was applied
             and 1 means 100% monthly interest was applied
         status:
-          $ref: "#/components/schemas/payment_credit_card/properties/status"
+          $ref: "../base/v1/entities.yml#/components/schemas/payment_credit_card/properties/status"
         document_type:
-          $ref: "#/components/schemas/payment_credit_card/properties/document_type"
+          $ref: "../base/v1/entities.yml#/components/schemas/payment_credit_card/properties/document_type"
         document:
           type: string
           description: The document number associated with the payer
@@ -1313,9 +1313,9 @@ components:
           description: The applied interest rate - where 0 means no interest  was applied
             and 1 means 100% monthly interest was applied
         status:
-          $ref: "#/components/schemas/payment_credit_card/properties/status"
+          $ref: "../base/v1/entities.yml#/components/schemas/payment_credit_card/properties/status"
         document_type:
-          $ref: "#/components/schemas/payment_credit_card/properties/document_type"
+          $ref: "../base/v1/entities.yml#/components/schemas/payment_credit_card/properties/document_type"
         document:
           type: string
           description: The document number associated with the payer

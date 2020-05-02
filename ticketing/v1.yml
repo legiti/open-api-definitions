@@ -13,7 +13,7 @@ info:
   version: "1.0"
   license:
     name: MIT
-  contact: 
+  contact:
     name: Legiti Dev Team
     url: http://www.docs.legiti.com
     email: publishing@legiti.com
@@ -116,9 +116,9 @@ paths:
         '401':
           $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
-          $ref: "../base/v1/responses.yml#/components/schemas/403Response" 
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
         '503':
-          $ref: "../base/v1/responses.yml#/components/schemas/503Response" 
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
     put:
       description: Send information to Legiti any time an event's information (description, venue, start/end time, etc...) is altered.
       tags:
@@ -142,7 +142,7 @@ paths:
         '403':
           $ref: "../base/v1/responses.yml#/components/schemas/403Response"
         '503':
-          $ref: "../base/v1/responses.yml#/components/schemas/503Response" 
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
   /ticketing/v1/order:
     post:
       summary: Notify Legiti any time a new order is created
@@ -189,7 +189,7 @@ paths:
                 coupon_names:
                   type: array
                   description: >-
-                   The name of the coupons that were applied. Note: 
+                   The name of the coupons that were applied. Note:
                    if coupon_names is provided, discount_value is also required
                   items:
                     type: string
@@ -259,9 +259,9 @@ paths:
                   description: The payments used in this purchase
                   items:
                     oneOf:
-                      - $ref: "#/components/schemas/payment_credit_card"
-                      - $ref: "#/components/schemas/payment_boleto"
-                      - $ref: "#/components/schemas/payment_other"
+                      - $ref: "../base/v1/entities.yml#/components/schemas/payment_credit_card"
+                      - $ref: "../base/v1/entities.yml#/components/schemas/payment_boleto"
+                      - $ref: "../base/v1/entities.yml#/components/schemas/payment_other"
       responses:
         '200':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
@@ -285,20 +285,7 @@ paths:
         content:
           application/json:
             schema:
-              title: body_order_put
-              type: object
-              required:
-                - id
-                - status
-              properties:
-                id:
-                  type: string
-                  description: The order's unique identifier within your platform
-                status:
-                  $ref: "../base/v1/enums.yml#/components/schemas/OrderStatus"
-                status_reason:
-                  type: string
-                  description: The reason for the status change
+              $ref: "../base/v1/entities.yml#/components/schemas/body_order_put"
       responses:
         '200':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
@@ -347,7 +334,7 @@ paths:
                     - cancelled
                     - rejected
                   description: >-
-                    The status of the transfer (accepted values: 
+                    The status of the transfer (accepted values:
                     "pending" "accepted" "cancelled" "rejected")
                 recipient:
                   $ref: "#/components/schemas/Recipient"
@@ -361,7 +348,7 @@ paths:
         '401':
           $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
-          $ref: "../base/v1/responses.yml#/components/schemas/403Response" 
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
         '503':
           $ref: "../base/v1/responses.yml#/components/schemas/503Response"
     put:
@@ -395,7 +382,7 @@ paths:
                     - cancelled
                     - rejected
                   description: >-
-                    The status of the transfer (accepted values: 
+                    The status of the transfer (accepted values:
                     "pending" "accepted" "cancelled" "rejected")
                 recipient:
                   $ref: "#/components/schemas/Recipient"
@@ -407,19 +394,19 @@ paths:
         '401':
           $ref: "../base/v1/responses.yml#/components/schemas/401Response"
         '403':
-          $ref: "../base/v1/responses.yml#/components/schemas/403Response" 
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
         '503':
           $ref: "../base/v1/responses.yml#/components/schemas/503Response"
   /ticketing/v1/auth:
-    $ref: "../base/v1/entities.yml#/components/schemas/Auth"
+    $ref: "../base/v1/endpoints.yml#/components/schemas/Auth"
   /ticketing/v1/order/mark_fraudulent:
-    $ref: "../base/v1/entities.yml#/components/schemas/OrderMarkedFraudulent"
+    $ref: "../base/v1/endpoints.yml#/components/schemas/OrderMarkedFraudulent"
   /ticketing/v1/order/payment:
-    $ref: "../base/v1/entities.yml#/components/schemas/PaymentUpdate"
+    $ref: "../base/v1/endpoints.yml#/components/schemas/PaymentUpdate"
   /ticketing/v1/user:
-    $ref: "../base/v1/entities.yml#/components/schemas/User"
+    $ref: "../base/v1/endpoints.yml#/components/schemas/User"
   /ticketing/v1/password:
-    $ref: "../base/v1/entities.yml#/components/schemas/Password"
+    $ref: "../base/v1/endpoints.yml#/components/schemas/Password"
 components:
   schemas:
     virtual_event:
@@ -504,220 +491,15 @@ components:
             - email
             - id
           description: >-
-            The type of identifier that the ID field contains. 
-            Accepted values:"email"or "id" (where "id" corresponds 
-            to Your platform's user_id of the User account receiving 
+            The type of identifier that the ID field contains.
+            Accepted values:"email"or "id" (where "id" corresponds
+            to Your platform's user_id of the User account receiving
             the ticket in the transfer)
         id:
           type: string
-          description: >- 
-            The identifier for the recipient. If "type" is "email", 
+          description: >-
+            The identifier for the recipient. If "type" is "email",
             this should be an email address. Otherwise, it should be a user_id.
-    payment_credit_card:
-      title: payment_credit_card
-      type: object
-      required:
-        - id
-        - method
-        - payment_value
-        - installments
-        - status
-        - credit_card
-        - billing_address
-      properties:
-        id:
-          type: string
-          description: >-
-            The unique identifier for the payment within your platform. 
-            If you don't have one you can send us the order id. 
-            Be advised that this is the identifier to be used 
-            if in the future you need to update payment information
-        method:
-          type: string
-          description: The payment's method. The allowed values are credit_card, boleto, wallet, and other
-          enum:
-            - credit_card
-            - boleto
-            - wallet
-            - other
-        payment_value:
-          type: number
-          format: float
-          minimum: 0
-        installments:
-          type: integer
-          description: The number of installments (e.g. "parcelas") to be paid
-        interest:
-          type: number
-          format: float
-          minimum: 0
-          maximum: 100
-          description: >-
-            The applied interest rate - where 0 means no interest 
-            was applied and 1 means 100% monthly interest was applied
-        status:
-          $ref: "../base/v1/enums.yml#/components/schemas/PaymentStatus"
-        document_type:
-          $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
-          description: >-
-            The document type associated with the payment's document 
-            number. Accepted values are cpf, cnpj, passport, rg, 
-            rne, and other
-        document:
-          type: string
-          description: The document number associated with the payer
-        credit_card:
-          type: object
-          description: >-
-            The credit card associated with the payment. 
-            Note: credit_card is required only if the method 
-            is credit_card
-          required:
-            - first_six_digits
-            - last_four_digits
-            - expiration_date
-            - holder_name
-          properties:
-            first_six_digits:
-              type: string
-              minLength: 6
-              maxLength: 6
-              description: The first six digits of the credit card number (should be only digits)
-            last_four_digits:
-              type: string
-              minLength: 4
-              maxLength: 4
-              description: The last four digits of the credit card number (should be only digits)
-            expiration_date:
-              type: string
-              minLength: 5
-              maxLength: 5
-              pattern: '^([0-9]{2})\/([0-9]{2})$'
-              description: The credit card's expiration date, formatted as mm/yy
-            holder_name:
-              type: string
-              description: The credit card holder's full name
-        billing_address:
-          description: >-
-            The billing address associated with the payment. 
-            Note: billing_address is required only if the method 
-            is credit_card or boleto
-          $ref: "../base/v1/entities.yml#/components/schemas/Address"
-    payment_boleto:
-      title: payment_boleto
-      type: object
-      required:
-        - id
-        - method
-        - payment_value
-        - installments
-        - status
-        - billing_address
-      properties:
-        id:
-          type: string
-          description: >-
-            The unique identifier for the payment within your platform. 
-            If you don't have one you can send us the order id. 
-            Be advised that this is the identifier to be used 
-            if in the future you need to update payment information
-        method:
-          type: string
-          description: The payment's method. The allowed values are credit_card, boleto, wallet, and other
-          enum:
-            - credit_card
-            - boleto
-            - wallet
-            - other
-        payment_value:
-          type: number
-          format: float
-          minimum: 0
-        installments:
-          type: integer
-          description: The number of installments (e.g. "parcelas") to be paid
-        interest:
-          type: number
-          format: float
-          minimum: 0
-          maximum: 100
-          description: >-
-            The applied interest rate - where 0 means no interest 
-            was applied and 1 means 100% monthly interest was applied
-        status:
-          $ref: "../base/v1/enums.yml#/components/schemas/PaymentStatus"
-        document_type:
-          $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
-          description: >-
-            The document type associated with the payment's document 
-            number. Accepted values are cpf, cnpj, passport, rg, 
-            rne, and other
-        document:
-          type: string
-          description: The document number associated with the payer
-        billing_address:
-          description: >-
-            The billing address associated with the payment. 
-            Note: billing_address is required only if the method 
-            is credit_card or boleto
-          $ref: "../base/v1/entities.yml#/components/schemas/Address"
-    payment_other:
-      title: payment_other
-      type: object
-      required:
-        - id
-        - method
-        - payment_value
-        - installments
-        - status
-      properties:
-        id:
-          type: string
-          description: >-
-            The unique identifier for the payment within your platform. 
-            If you don't have one you can send us the order id. 
-            Be advised that this is the identifier to be used 
-            if in the future you need to update payment information
-        method:
-          type: string
-          description: The payment's method. The allowed values are credit_card, boleto, wallet, and other
-          enum:
-            - credit_card
-            - boleto
-            - wallet
-            - other
-        payment_value:
-          type: number
-          format: float
-          minimum: 0
-        installments:
-          type: integer
-          description: The number of installments (e.g. "parcelas") to be paid
-        interest:
-          type: number
-          format: float
-          minimum: 0
-          maximum: 100
-          description: >-
-            The applied interest rate - where 0 means no interest 
-            was applied and 1 means 100% monthly interest was applied
-        status:
-          $ref: "../base/v1/enums.yml#/components/schemas/PaymentStatus"
-        document_type:
-          $ref: "../base/v1/enums.yml#/components/schemas/DocumentType"
-          description: >-
-            The document type associated with the payment's document 
-            number. Accepted values are cpf, cnpj, passport, rg, 
-            rne, and other
-        document:
-          type: string
-          description: The document number associated with the payer
-        billing_address:
-          description: >-
-            The billing address associated with the payment. 
-            Note: billing_address is required only if the method 
-            is credit_card or boleto
-          $ref: "../base/v1/entities.yml#/components/schemas/Address"
   securitySchemes:
     bearerAuth:
       type: http
