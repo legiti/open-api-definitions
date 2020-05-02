@@ -3,7 +3,7 @@ externalDocs:
     description: Official documentation
     url: https://docs.legiti.com/
 info:
-  title: Legiti Ticketing API
+  title: Legiti Delivery API
   description: >-
     Legiti protects your company from losses due to fraud and
     chargebacks, maximizing revenue from valid purchases and minimizing
