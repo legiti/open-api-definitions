@@ -216,38 +216,7 @@ paths:
                             items:
                               type: string
                       delivery:
-                        type: object
-                        description: Legiti standardized format for representing a product delivery.
-                        required:
-                          - id
-                          - type
-                          - status
-                        properties:
-                          id:
-                            type: string
-                            description: The delivery's unique identifier within your platform. Be advised, this is the id used to update delivery information afterwards
-                          type:
-                            type: string
-                            description: The delivery's shipping type. The allowed values are ['normal', 'express', 'pickup']
-                            enum:
-                              - normal
-                              - express
-                              - pickup
-                          status:
-                            type: string
-                            description: The delivery's status. The allowed values are ['delivered', 'confirmed', 'pending', 'cancelled', 'rejected']
-                            enum:
-                              - delivered
-                              - confirmed
-                              - pending
-                              - cancelled
-                              - rejected
-                          delivery_datetime:
-                            type: string
-                            description: The item's planned delivery date in UTC following the ISO 8601 format (YYYY-MM-DDTHH:mm:ssZ)
-                          deliverer_id:
-                            type: string
-                            description: The deliverer's unique identifier within your platform
+                        $ref: "#/components/schemas/Delivery"
                 payments:
                   title: order_payment
                   type: array
@@ -294,6 +263,28 @@ paths:
           $ref: "../base/v1/responses.yml#/components/schemas/403Response"
         '503':
           $ref: "../base/v1/responses.yml#/components/schemas/503Response"
+  /delivery/v1/order/delivery:
+    put:
+      description: Notify Legiti of delivery information updates.
+      tags:
+        - order
+      operationId: delivery_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Delivery"
+      responses:
+        '200':
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
+        '400':
+          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+        '401':
+          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+        '403':
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+        '503':
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
   /delivery/v1/auth:
     $ref: "../base/v1/endpoints.yml#/components/schemas/Auth"
   /delivery/v1/order/mark_fraudulent:
@@ -310,5 +301,39 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+  schemas:
+    Delivery:
+      type: object
+      description: Legiti standardized format for representing a product delivery.
+      required:
+        - id
+        - type
+        - status
+      properties:
+        id:
+          type: string
+          description: The delivery's unique identifier within your platform. Be advised, this is the id used to update delivery information afterwards
+        type:
+          type: string
+          description: The delivery's shipping type. The allowed values are ['normal', 'express', 'pickup']
+          enum:
+            - normal
+            - express
+            - pickup
+        status:
+          type: string
+          description: The delivery's status. The allowed values are ['delivered', 'confirmed', 'pending', 'cancelled', 'rejected']
+          enum:
+            - delivered
+            - confirmed
+            - pending
+            - cancelled
+            - rejected
+        delivery_datetime:
+          type: string
+          description: The item's planned delivery date in UTC following the ISO 8601 format (YYYY-MM-DDTHH:mm:ssZ)
+        deliverer_id:
+          type: string
+          description: The deliverer's unique identifier within your platform
 security:
   - bearerAuth: []
