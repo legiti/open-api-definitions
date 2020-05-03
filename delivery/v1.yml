@@ -1,0 +1,339 @@
+openapi: 3.0.1
+externalDocs:
+    description: Official documentation
+    url: https://docs.legiti.com/
+info:
+  title: Legiti Delivery API
+  description: >-
+    Legiti protects your company from losses due to fraud and
+    chargebacks, maximizing revenue from valid purchases and minimizing
+    unnecessary customer friction. We accomplish this by making predictions
+    based on past and present customer behavior to evaluate the likelihood
+    that an order is fraudulent.
+  version: "1.0"
+  license:
+    name: MIT
+  contact:
+    name: Legiti Dev Team
+    url: http://www.docs.legiti.com
+    email: publishing@legiti.com
+servers:
+  - url: "https://legiti-api.lgtcdn.net"
+paths:
+  /delivery/v1/evaluation:
+    post:
+      description: Send requests to this endpoint whenever you have an order that you would like to get evaluated by Legiti.
+      tags:
+        - evaluation
+      operationId: ticketing_evaluation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: body_ticketing_evaluation
+              type: object
+              required:
+                - order_id
+                - user_id
+                - total_paid_value
+                - shipping_value
+                - order_datetime
+                - order_items
+                - shipping_address
+                - payments
+              properties:
+                order_id:
+                  type: string
+                  description: The order's unique identifier within your platform
+                user_id:
+                  type: string
+                  description: Your unique identifier for this user in your platform
+                total_paid_value:
+                  type: number
+                  format: float
+                  description: The exact amount that the user paid
+                shipping_value:
+                  type: number
+                  format: float
+                  description: Delivery's shipping value
+                order_datetime:
+                  type: string
+                  format: date-time
+                  description: The order's date and time of sale in UTC following the ISO 8601 format (YYYY-MM-DDTHH:mm:ssZ)
+                order_items:
+                  type: array
+                  items:
+                    $ref: "../base/v1/entities.yml#/components/schema/EvaluationOrderItem"
+                  description: The purchased items (e.g. products)
+                shipping_address:
+                  $ref: "../base/v1/entities.yml#/components/schema/Address"
+                payments:
+                  type: array
+                  description: the payments used in this purchase
+                  items:
+                    $ref: "../base/v1/entities.yml#/components/schema/EvaluationPaymentEntity"
+      responses:
+          '200':
+            $ref: "../base/v1/responses.yml#/components/schemas/Evaluation200Response"
+          '400':
+            $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+          '401':
+            $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+          '403':
+            description: Unauthorized
+            content:
+              application/json:
+                schema:
+                  title: response_evaluation_unauthorized
+                  oneOf:
+                  - type: object
+                    title: response_forbidden
+                    description: Valid API key not authorized to access /evaluation resource
+                    required:
+                      - error_message
+                      - error_code
+                    properties:
+                      error_message:
+                        type: string
+                      error_code:
+                        type: number
+                  - $ref: "../base/v1/responses.yml#/components/schemas/ErrorResponseNotAuthorized"
+          '503':
+            $ref: "../base/v1/responses.yml#/components/schemas/503Response"
+  /delivery/v1/order:
+    post:
+      summary: Notify Legiti any time a new order is created
+      description: >-
+        You can send order-related information to Legiti via the /order endpoint
+      tags:
+        - order
+      operationId: order_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: body_order_post
+              type: object
+              required:
+                - id
+                - user_id
+                - total_paid_value
+                - status
+                - items
+                - payments
+              properties:
+                id:
+                  type: string
+                  description: The order's unique identifier within your platform
+                user_id:
+                  type: string
+                  description: The buyer's id
+                total_paid_value:
+                  type: number
+                  format: float
+                  minimum: 0
+                  description: The exact amount that the user paid
+                total_gross_value:
+                  type: number
+                  format: float
+                  minimum: 0
+                  description: The sum of all the order items value
+                discount_value:
+                  type: number
+                  format: float
+                  minimum: 0
+                  description: The discount value applied to the order
+                coupon_names:
+                  type: array
+                  description: >-
+                   The name of the coupons that were applied. Note:
+                   if coupon_names is provided, discount_value is also required
+                  items:
+                    type: string
+                currency:
+                  type: string
+                  maxLength: 3
+                  minLength: 3
+                  description: The currency of the total_paid_value, as an ISO-4217 currency code
+                status:
+                  $ref: "../base/v1/enums.yml#/components/schemas/OrderStatus"
+                items:
+                  title: order_items
+                  type: array
+                  items:
+                    title: order_item
+                    description: Legiti standardized format for representing purchased items
+                    type: object
+                    required:
+                      - quantity
+                      - unit_price
+                      - total_value
+                      - product
+                    properties:
+                      quantity:
+                        type: number
+                        format: integer
+                        description: The purchased quantity of this product
+                      unit_price:
+                        type: number
+                        format: float
+                        description: The purchased product's unit price
+                      unit_discount:
+                        type: number
+                        format: float
+                        description: The discount amount applied to each unit of this product
+                      total_value:
+                        type: number
+                        format: float
+                        description: The total value paid for this product
+                      product:
+                        type: object
+                        description: Legiti standardized format for representing a product.
+                        required:
+                          - sku
+                          - title
+                        properties:
+                          sku:
+                            type: string
+                            description: The product sku or unique identifier within your platform
+                          title:
+                            type: string
+                            description: The product title or listing name
+                          product_id:
+                            type: string
+                            description: The product secondary id (it can be the id of the main product if this is a variation only)
+                          description:
+                            type: string
+                            description: The product description
+                          vendors:
+                            type: array
+                            description: The id of the users who are selling the product. If your users can't sell a product you may not send this field
+                            items:
+                              type: string
+                          categories:
+                            type: array
+                            description: Your platform categories that apply to this product. (Arbitrary categories accepted, but must be consistent.)
+                            items:
+                              type: string
+                      delivery:
+                        $ref: "#/components/schemas/Delivery"
+                payments:
+                  title: order_payment
+                  type: array
+                  description: The payments used in this purchase
+                  items:
+                    oneOf:
+                      - $ref: "../base/v1/entities.yml#/components/schemas/payment_credit_card"
+                      - $ref: "../base/v1/entities.yml#/components/schemas/payment_boleto"
+                      - $ref: "../base/v1/entities.yml#/components/schemas/payment_other"
+                shipping_address:
+                  $ref: "../base/v1/entities.yml#/components/schemas/Address"
+      responses:
+        '200':
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
+        '201':
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
+        '400':
+          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+        '401':
+          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+        '403':
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+        '503':
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
+    put:
+      summary: Notify Legiti when an order's status is updated.
+      description: Update order status
+      tags:
+        - order
+      operationId: order_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../base/v1/entities.yml#/components/schemas/body_order_put"
+      responses:
+        '200':
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
+        '400':
+          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+        '401':
+          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+        '403':
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+        '503':
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
+  /delivery/v1/order/delivery:
+    put:
+      description: Notify Legiti of delivery information updates.
+      tags:
+        - order
+      operationId: delivery_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Delivery"
+      responses:
+        '200':
+          $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
+        '400':
+          $ref: "../base/v1/responses.yml#/components/schemas/400Response"
+        '401':
+          $ref: "../base/v1/responses.yml#/components/schemas/401Response"
+        '403':
+          $ref: "../base/v1/responses.yml#/components/schemas/403Response"
+        '503':
+          $ref: "../base/v1/responses.yml#/components/schemas/503Response"
+  /delivery/v1/auth:
+    $ref: "../base/v1/endpoints.yml#/components/schemas/Auth"
+  /delivery/v1/order/mark_fraudulent:
+    $ref: "../base/v1/endpoints.yml#/components/schemas/OrderMarkedFraudulent"
+  /delivery/v1/order/payment:
+    $ref: "../base/v1/endpoints.yml#/components/schemas/PaymentUpdate"
+  /delivery/v1/user:
+    $ref: "../base/v1/endpoints.yml#/components/schemas/User"
+  /delivery/v1/password:
+    $ref: "../base/v1/endpoints.yml#/components/schemas/Password"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Delivery:
+      type: object
+      description: Legiti standardized format for representing a product delivery.
+      required:
+        - id
+        - type
+        - status
+      properties:
+        id:
+          type: string
+          description: The delivery's unique identifier within your platform. Be advised, this is the id used to update delivery information afterwards
+        type:
+          type: string
+          description: The delivery's shipping type. The allowed values are ['normal', 'express', 'pickup']
+          enum:
+            - normal
+            - express
+            - pickup
+        status:
+          type: string
+          description: The delivery's status. The allowed values are ['delivered', 'confirmed', 'pending', 'cancelled', 'rejected']
+          enum:
+            - delivered
+            - confirmed
+            - pending
+            - cancelled
+            - rejected
+        delivery_datetime:
+          type: string
+          description: The item's planned delivery date in UTC following the ISO 8601 format (YYYY-MM-DDTHH:mm:ssZ)
+        deliverer_id:
+          type: string
+          description: The deliverer's unique identifier within your platform
+security:
+  - bearerAuth: []
