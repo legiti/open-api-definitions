@@ -1,7 +1,8 @@
 # open-api-defs
 Repository for Legiti OpenAPI definitions. Our official API definitions can be found as follows:
-- [Ticketing](https://github.com/legiti/open-api-defs/blob/master/ticketing/v1_resolved.yml)
 - [Delivery](https://github.com/legiti/open-api-defs/blob/master/delivery/v1_resolved.yml)
+- [Ticketing](https://github.com/legiti/open-api-defs/blob/master/ticketing/v1_resolved.yml)
+
 
 
 ## Using the SDKS
