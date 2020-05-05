@@ -1,6 +1,7 @@
 # open-api-defs
 Repository for Legiti OpenAPI definitions. Our official API definitions can be found as follows:
-- [Ticketing](https://app.swaggerhub.com/apis/LegitiTech/legiti-ticketing_api/1.0)
+- [Ticketing](https://github.com/legiti/open-api-defs/blob/master/ticketing/v1_resolved.yml)
+- [Delivery](https://github.com/legiti/open-api-defs/blob/master/delivery/v1_resolved.yml)
 
 ## Developing
 - OpenAPI Editor plugin for VSCode highly recommended
