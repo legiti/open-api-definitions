@@ -749,6 +749,13 @@ paths:
                   description: What type of authentication activity occurred. Accepted values are
                     limited to 'login_success', 'login_failure', and 'logout'
                     (case-insensitive)
+            examples:
+              login:
+                value: |-
+                  {
+                    "user_id":     "232550",
+                    "action_type": "login_success"
+                  }
       responses:
         "200":
           description: Valid create request

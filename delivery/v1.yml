@@ -72,6 +72,49 @@ paths:
                   description: the payments used in this purchase
                   items:
                     $ref: "../base/v1/entities.yml#/components/schema/EvaluationPaymentEntity"
+            examples:
+              request_order_eval:
+                value: |-
+                  {
+                    "order_id": "12345",
+                    "user_id": "98745",
+                    "total_paid_value": 110.0,
+                    "shipping_value": 9.50,
+                    "order_datetime": "2020-02-11T20:18:40Z",
+                    "order_items": [{
+                        "quantity": 2,
+                        "product": {
+                            "sku": "15975368",
+                            "product_id": "123",
+                            "category_id": "8"
+                        }
+                    }, {
+                        "quantity": 1,
+                        "product": {
+                            "sku": "75363418",
+                            "product_id": "456",
+                            "category_id": "9"
+                        }
+                    }],
+                    "shipping_address": {
+                        "street_name": "Rua Fidalga",
+                        "street_number": "252",
+                        "zip_code": "05432-010",
+                        "city": "São Paulo",
+                        "state": "SP",
+                        "country": "BR",
+                        "latitude": -23.5517954,
+                        "longitude": -46.6931258
+                    },
+                    "payments": [{
+                        "document_type": "cpf",
+                        "document": "12345678911",
+                        "credit_card": {
+                            "first_six_digits": "123456",
+                            "last_four_digits": "1234"
+                        }
+                    }]
+                  }
       responses:
           '200':
             $ref: "../base/v1/responses.yml#/components/schemas/Evaluation200Response"
@@ -228,6 +271,98 @@ paths:
                       - $ref: "../base/v1/entities.yml#/components/schemas/payment_other"
                 shipping_address:
                   $ref: "../base/v1/entities.yml#/components/schemas/Address"
+            examples:
+              create_order_with_delivery: 
+                value: |-
+                  {
+                    "id": "12345",
+                    "user_id": "98745",
+                    "total_paid_value": 110.0,
+                    "total_gross_value": 100.0,
+                    "discount_value": 10.0,
+                    "shipping_value": 10.0,
+                    "coupon_names": ["LOTR"],
+                    "currency": "BRL",
+                    "status": "pending",
+                    "items": [
+                        {
+                            "quantity":2,
+                            "unit_price":30,
+                            "unit_discount":0,
+                            "total_value":60,
+                            "product": {
+                                "sku": "15975368",
+                                "title": "Product A",
+                                "product_id": "123",
+                                "description": "Cool Product A",
+                                "vendors": ["12348524"],
+                                "categories": ["8"]
+                            },
+                            "delivery": {
+                                "id": "1569723",
+                                "type": "normal",
+                                "status": "pending",
+                                "delivery_datetime": "2020-02-11T20:18:40Z",
+                                "deliverer_id": "12345"
+                            }
+                        },
+                        {
+                            "quantity":1,
+                            "unit_price":50.0,
+                            "unit_discount":10.0,
+                            "total_value":40.0,
+                            "product": {
+                                "sku": "75363418",
+                                "title": "Product B",
+                                "product_id": "456",
+                                "description": "Cool Product B",
+                                "vendors": ["8524569"],
+                                "categories": ["9", "8"]
+                            },
+                            "delivery": {
+                                "id": "1569723",
+                                "type": "normal",
+                                "status": "pending",
+                                "delivery_datetime": "2020-02-11T20:18:40Z",
+                                "deliverer_id": "12345"
+                            }
+                        }
+                    ],
+                    "payments": [
+                        {
+                            "id": "974613",
+                            "method": "credit_card",
+                            "payment_value": 110.0,
+                            "installments": 1,
+                            "interest": 0.1,
+                            "status": "approved",
+                            "document_type": "cpf",
+                            "document": "12345678911",
+                            "credit_card": {
+                                "first_six_digits": "123456",
+                                "last_four_digits": "1234",
+                                "expiration_date": "23/05",
+                                "holder_name": "Random da Silva"
+                            },
+                            "billing_address":{
+                                "street_name": "Rua Fidalga",
+                                "street_number": "252",
+                                "zip_code": "05432-010",
+                                "city": "São Paulo",
+                                "state": "SP",
+                                "country": "BR"
+                            }
+                        }
+                    ],
+                    "shipping_address": {
+                        "street_name": "Rua Fidalga",
+                        "street_number": "252",
+                        "zip_code": "05432-010",
+                        "city": "São Paulo",
+                        "state": "SP",
+                        "country": "BR"
+                    }
+                  }
       responses:
         '200':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
@@ -252,6 +387,14 @@ paths:
           application/json:
             schema:
               $ref: "../base/v1/entities.yml#/components/schemas/body_order_put"
+            examples:
+              update_order_status_cancelled:
+                value: |-
+                  {
+                      "id": "12345",
+                      "status": "cancelled",
+                      "status_reason": "cancelled by the user"
+                  }
       responses:
         '200':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
@@ -274,6 +417,14 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/Delivery"
+            examples:
+              update_order_delivered:
+                value: |-
+                  {
+                    "id": "974613",
+                    "status": "delivered",
+                    "delivery_datetime": "2020-02-11T20:18:40Z"
+                  }
       responses:
         '200':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
