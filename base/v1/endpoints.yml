@@ -93,7 +93,7 @@ components:
                       external_antifraud, internal_system, and other
               examples:
                 mark_internal_rejection:
-                  value: |- 
+                  value: |-
                     {
                       "order_id": "12345",
                       "fraud_signal_type": "internal_system"
