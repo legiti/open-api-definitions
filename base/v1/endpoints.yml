@@ -33,6 +33,19 @@ components:
                       What type of authentication activity occurred.
                       Accepted values are limited to 'login_success',
                       'login_failure', and 'logout' (case-insensitive)
+              examples:
+                'login':
+                  value: |-
+                    {
+                      "user_id":     "232550",
+                      "action_type": "login_success"
+                    }
+                'logout':
+                  value: |-
+                    {
+                      "user_id":     "232550",
+                      "action_type": "logout_success"
+                    }
         responses:
           '201':
             $ref: "./responses.yml#/components/schemas/Collection20xResponse"
@@ -78,6 +91,13 @@ components:
                       The mechanism by which you identified the order as fraudulent.
                       Current accepted values are acquirer, manual_analysis, chargeback,
                       external_antifraud, internal_system, and other
+              examples:
+                mark_internal_rejection:
+                  value: |-
+                    {
+                      "order_id": "12345",
+                      "fraud_signal_type": "internal_system"
+                    }
         responses:
           '200':
             $ref: "./responses.yml#/components/schemas/Collection20xResponse"
@@ -115,6 +135,14 @@ components:
                   status_reason:
                     type: string
                     description: The reason for the status change
+              examples:
+                payment_approved:
+                  value: |-
+                    {
+                      "id": "974613",
+                      "status": "declined",
+                      "status_reason": "Wrong credit card information"
+                    }
         responses:
           '200':
             $ref: "./responses.yml#/components/schemas/Collection20xResponse"
@@ -204,6 +232,30 @@ components:
                     title: user_address
                     description: The address associated with the user
                     $ref: "./entities.yml#/components/schemas/Address"
+              examples:
+                new_user:
+                  value: |-
+                    {
+                      "id":                  "12345",
+                      "email":               "my_user@legiti.com",
+                      "document":            "123.456.789-10",
+                      "document_type":       "cpf",
+                      "phone_number":        "11999123456",
+                      "phone_country_code":  "55",
+                      "password_hash":       "effebbbeeabc123",
+                      "name":                "john fulano",
+                      "gender":              "male",
+                      "user_type":           "consumer",
+                      "creation_datetime":   "2019-12-17T00:48:03Z",
+                      "address":             {
+                        "street_name":       "Rua Fidalga",
+                        "street_number":     "252",
+                        "zip_code":          "05432-010",
+                        "city":              "São Paulo",
+                        "state":             "SP",
+                        "country":           "BR"
+                      }
+                    }
         responses:
           '201':
             $ref: "./responses.yml#/components/schemas/Collection20xResponse"
@@ -289,6 +341,13 @@ components:
                   address:
                     description: The address associated with the user
                     $ref: "./entities.yml#/components/schemas/Address"
+              examples:
+                update_user_email:
+                  value: |-
+                    {
+                      "id":    "12345",
+                      "email": "my_user@legiti.com"
+                    }
         responses:
           '200':
             $ref: "./responses.yml#/components/schemas/Collection20xResponse"
@@ -327,6 +386,13 @@ components:
                       description: >-
                         The type of user action that was taken.
                         Accepted values are recovery and reset (case-insensitive)
+                examples:
+                  password_recovery:
+                    value: |-
+                      {
+                        "recovery_email": "badguy@yahoo.com",
+                        "action_type":    "reset"
+                      }
           responses:
             '201':
               $ref: "./responses.yml#/components/schemas/Collection20xResponse"

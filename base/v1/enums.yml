@@ -47,3 +47,4 @@ components:
         - reject
         - manual
         - unavailable
+      example: approve

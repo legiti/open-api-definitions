@@ -109,6 +109,7 @@ components:
       properties:
         message:
           type: string
+          example: Unauthorized.
     ErrorResponseNotAuthorized:
       title: response_not_authorized
       type: object
@@ -118,3 +119,4 @@ components:
       properties:
         Message:
           type: string
+          example: User is not authorized to access this resource with an explicit deny

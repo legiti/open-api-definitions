@@ -64,6 +64,24 @@ paths:
                   description: the payments used in this purchase
                   items:
                     $ref: "../base/v1/entities.yml#/components/schema/EvaluationPaymentEntity"
+            examples:
+              eval_ticketing_order:
+                value: |-
+                  {
+                    "order_id": "12345",
+                    "user_id": "98745",
+                    "total_paid_value": 110.0,
+                    "order_datetime": "2020-02-11T20:18:40Z",
+                    "event_ids": ["1242"],
+                    "payments": [{
+                      "document_type": "cpf",
+                      "document": "12345678911",
+                      "credit_card": {
+                        "first_six_digits": "123456",
+                        "last_four_digits": "1234"
+                      }
+                    }]
+                  }
       responses:
           '200':
             $ref: "../base/v1/responses.yml#/components/schemas/Evaluation200Response"
@@ -106,6 +124,47 @@ paths:
               oneOf:
                 - $ref: "#/components/schemas/virtual_event"
                 - $ref: "#/components/schemas/physical_event"
+            examples:
+              physical_event:
+                value: |- 
+                  {
+                    "id": "123",
+                    "title": "Event A",
+                    "description": "Cool event A",
+                    "organizers": ["12348524", "12345672"],
+                    "categories": ["2", "3"],
+                    "is_virtual": false,
+                    "event_start_datetime": "2020-02-11T20:18:40Z",
+                    "event_last_datetime": "2020-02-13T20:18:40Z",
+                    "venue": {
+                      "street_name":   "Rua Novarua",
+                      "street_number": "253",
+                      "zip_code":      "05432-010",
+                      "city":          "São Paulo",
+                      "state":         "SP",
+                      "country":       "BR"
+                    }
+                  }
+              virtual_event:
+                value: |-
+                  {
+                    "id": "123",
+                    "title": "Event A",
+                    "description": "Cool event A",
+                    "organizers": ["12348524", "12345672"],
+                    "categories": ["2", "3"],
+                    "is_virtual": false,
+                    "event_start_datetime": "2020-02-11T20:18:40Z",
+                    "event_last_datetime": "2020-02-13T20:18:40Z",
+                    "venue": {
+                      "street_name":   "Rua Novarua",
+                      "street_number": "253",
+                      "zip_code":      "05432-010",
+                      "city":          "São Paulo",
+                      "state":         "SP",
+                      "country":       "BR"
+                    }
+                  }
       responses:
         '200':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
@@ -132,6 +191,14 @@ paths:
               oneOf:
                 - $ref: "#/components/schemas/virtual_event"
                 - $ref: "#/components/schemas/physical_event"
+            examples:
+              change_event_times:
+                value: |-
+                  {
+                    "id": "123",
+                    "event_start_datetime": "2020-02-15T20:18:40Z",
+                    "event_last_datetime": "2020-02-18T20:18:40Z"
+                  }
       responses:
         '200':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
@@ -262,6 +329,61 @@ paths:
                       - $ref: "../base/v1/entities.yml#/components/schemas/payment_credit_card"
                       - $ref: "../base/v1/entities.yml#/components/schemas/payment_boleto"
                       - $ref: "../base/v1/entities.yml#/components/schemas/payment_other"
+            examples:
+              create_ticketing_order:
+                value: |-
+                  {
+                    "id": "12345",
+                    "user_id": "98745",
+                    "total_paid_value": 110.0,
+                    "total_gross_value": 100.0,
+                    "discount_value": 10.0,
+                    "coupon_names": ["BCOOL"],
+                    "currency": "BRL",
+                    "status": "pending",
+                    "tickets": [
+                      {
+                        "id": "15975368",
+                        "unit_price": 30,
+                        "discount": 0,
+                        "valid_from": "2020-02-11T20:18:40Z",
+                        "valid_until": "2020-02-12T20:18:40Z",
+                        "event_id": "123",
+                        "guest": {
+                          "name": "Ana Maria Braga",
+                          "email": "a_user@gmail.com",
+                          "document_type": "cpf",
+                          "document": "123421321312"
+                        }
+                      }
+                    ],
+                    "payments": [
+                      {
+                        "id": "974613",
+                        "method": "credit_card",
+                        "payment_value": 110.0,
+                        "installments": 1,
+                        "interest": 0.1,
+                        "status": "approved",
+                        "document_type": "cpf",
+                        "document": "12345678911",
+                        "credit_card": {
+                          "first_six_digits": "123456",
+                          "last_four_digits": "1234",
+                          "expiration_date": "23/05",
+                          "holder_name": "Random da Silva"
+                        },
+                        "billing_address": {
+                          "street_name": "Rua Fidalga",
+                          "street_number": "252",
+                          "zip_code": "05432-010",
+                          "city": "São Paulo",
+                          "state": "SP",
+                          "country": "BR"
+                        }
+                      }
+                    ]
+                  }
       responses:
         '200':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
@@ -286,6 +408,13 @@ paths:
           application/json:
             schema:
               $ref: "../base/v1/entities.yml#/components/schemas/body_order_put"
+            examples:
+              update_order_status:
+                value: |-
+                  {
+                    "id": "12345",
+                    "status": "approved"
+                  }
       responses:
         '200':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
@@ -338,6 +467,19 @@ paths:
                     "pending" "accepted" "cancelled" "rejected")
                 recipient:
                   $ref: "#/components/schemas/Recipient"
+            examples:
+              create_transfer:
+                value: |-
+                  {
+                    "id": "2134",
+                    "ticket_id": "15975368",
+                    "sender_user_id": "1234",
+                    "recipient": {
+                      "id": "1111",
+                      "type": "id"
+                    },
+                    "status": "pending"
+                  }
       responses:
         '201':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
@@ -386,6 +528,13 @@ paths:
                     "pending" "accepted" "cancelled" "rejected")
                 recipient:
                   $ref: "#/components/schemas/Recipient"
+            examples:
+              update_transfer:
+                value: |- 
+                  {
+                    "id": "2134",
+                    "status": "accepted"
+                  }
       responses:
         '200':
           $ref: "../base/v1/responses.yml#/components/schemas/Collection20xResponse"
