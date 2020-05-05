@@ -70,6 +70,49 @@ paths:
                   type: array
                   description: the payments used in this purchase
                   items: {}
+            examples:
+              request_order_eval:
+                value: |-
+                  {
+                    "order_id": "12345",
+                    "user_id": "98745",
+                    "total_paid_value": 110.0,
+                    "shipping_value": 9.50,
+                    "order_datetime": "2020-02-11T20:18:40Z",
+                    "order_items": [{
+                        "quantity": 2,
+                        "product": {
+                            "sku": "15975368",
+                            "product_id": "123",
+                            "category_id": "8"
+                        }
+                    }, {
+                        "quantity": 1,
+                        "product": {
+                            "sku": "75363418",
+                            "product_id": "456",
+                            "category_id": "9"
+                        }
+                    }],
+                    "shipping_address": {
+                        "street_name": "Rua Fidalga",
+                        "street_number": "252",
+                        "zip_code": "05432-010",
+                        "city": "São Paulo",
+                        "state": "SP",
+                        "country": "BR",
+                        "latitude": -23.5517954,
+                        "longitude": -46.6931258
+                    },
+                    "payments": [{
+                        "document_type": "cpf",
+                        "document": "12345678911",
+                        "credit_card": {
+                            "first_six_digits": "123456",
+                            "last_four_digits": "1234"
+                        }
+                    }]
+                  }
       responses:
         "200":
           description: Order successfully evaluated
@@ -95,6 +138,7 @@ paths:
                       - reject
                       - manual
                       - unavailable
+                    example: approve
                   message:
                     type: string
                     description: Optional field used to provide further information on
@@ -152,6 +196,7 @@ paths:
                 properties:
                   message:
                     type: string
+                    example: Unauthorized.
         "403":
           description: Unauthorized
           content:
@@ -178,6 +223,7 @@ paths:
                     properties:
                       Message:
                         type: string
+                        example: User is not authorized to access this resource with an explicit deny
         "503":
           description: Internal server error on DB insertion
           content:
@@ -616,6 +662,98 @@ paths:
                       type: number
                       format: float
                       description: The exact longitude of the address
+            examples:
+              create_order_with_delivery:
+                value: |-
+                  {
+                    "id": "12345",
+                    "user_id": "98745",
+                    "total_paid_value": 110.0,
+                    "total_gross_value": 100.0,
+                    "discount_value": 10.0,
+                    "shipping_value": 10.0,
+                    "coupon_names": ["LOTR"],
+                    "currency": "BRL",
+                    "status": "pending",
+                    "items": [
+                        {
+                            "quantity":2,
+                            "unit_price":30,
+                            "unit_discount":0,
+                            "total_value":60,
+                            "product": {
+                                "sku": "15975368",
+                                "title": "Product A",
+                                "product_id": "123",
+                                "description": "Cool Product A",
+                                "vendors": ["12348524"],
+                                "categories": ["8"]
+                            },
+                            "delivery": {
+                                "id": "1569723",
+                                "type": "normal",
+                                "status": "pending",
+                                "delivery_datetime": "2020-02-11T20:18:40Z",
+                                "deliverer_id": "12345"
+                            }
+                        },
+                        {
+                            "quantity":1,
+                            "unit_price":50.0,
+                            "unit_discount":10.0,
+                            "total_value":40.0,
+                            "product": {
+                                "sku": "75363418",
+                                "title": "Product B",
+                                "product_id": "456",
+                                "description": "Cool Product B",
+                                "vendors": ["8524569"],
+                                "categories": ["9", "8"]
+                            },
+                            "delivery": {
+                                "id": "1569723",
+                                "type": "normal",
+                                "status": "pending",
+                                "delivery_datetime": "2020-02-11T20:18:40Z",
+                                "deliverer_id": "12345"
+                            }
+                        }
+                    ],
+                    "payments": [
+                        {
+                            "id": "974613",
+                            "method": "credit_card",
+                            "payment_value": 110.0,
+                            "installments": 1,
+                            "interest": 0.1,
+                            "status": "approved",
+                            "document_type": "cpf",
+                            "document": "12345678911",
+                            "credit_card": {
+                                "first_six_digits": "123456",
+                                "last_four_digits": "1234",
+                                "expiration_date": "23/05",
+                                "holder_name": "Random da Silva"
+                            },
+                            "billing_address":{
+                                "street_name": "Rua Fidalga",
+                                "street_number": "252",
+                                "zip_code": "05432-010",
+                                "city": "São Paulo",
+                                "state": "SP",
+                                "country": "BR"
+                            }
+                        }
+                    ],
+                    "shipping_address": {
+                        "street_name": "Rua Fidalga",
+                        "street_number": "252",
+                        "zip_code": "05432-010",
+                        "city": "São Paulo",
+                        "state": "SP",
+                        "country": "BR"
+                    }
+                  }
       responses:
         "200":
           description: Valid create request
@@ -648,6 +786,7 @@ paths:
                 properties:
                   Message:
                     type: string
+                    example: User is not authorized to access this resource with an explicit deny
         "503":
           $ref: "#/paths/~1delivery~1v1~1evaluation/post/responses/503"
     put:
@@ -685,6 +824,14 @@ paths:
                 status_reason:
                   type: string
                   description: The reason for the status change
+            examples:
+              update_order_status_cancelled:
+                value: |-
+                  {
+                      "id": "12345",
+                      "status": "cancelled",
+                      "status_reason": "cancelled by the user"
+                  }
       responses:
         "200":
           $ref: "#/paths/~1delivery~1v1~1order/post/responses/200"
@@ -707,6 +854,14 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/Delivery"
+            examples:
+              update_order_delivered:
+                value: |-
+                  {
+                    "id": "974613",
+                    "status": "delivered",
+                    "delivery_datetime": "2020-02-11T20:18:40Z"
+                  }
       responses:
         "200":
           $ref: "#/paths/~1delivery~1v1~1order/post/responses/200"
@@ -755,6 +910,12 @@ paths:
                   {
                     "user_id":     "232550",
                     "action_type": "login_success"
+                  }
+              logout:
+                value: |-
+                  {
+                    "user_id":     "232550",
+                    "action_type": "logout_success"
                   }
       responses:
         "200":
@@ -824,6 +985,7 @@ paths:
                 properties:
                   message:
                     type: string
+                    example: Unauthorized.
         "403":
           description: Not authorized
           content:
@@ -837,6 +999,7 @@ paths:
                 properties:
                   Message:
                     type: string
+                    example: User is not authorized to access this resource with an explicit deny
         "503":
           description: Internal server error on DB insertion
           content:
@@ -883,6 +1046,13 @@ paths:
                   description: The mechanism by which you identified the order as fraudulent.
                     Current accepted values are acquirer, manual_analysis,
                     chargeback, external_antifraud, internal_system, and other
+            examples:
+              mark_internal_rejection:
+                value: |-
+                  {
+                    "order_id": "12345",
+                    "fraud_signal_type": "internal_system"
+                  }
       responses:
         "200":
           $ref: "#/paths/~1delivery~1v1~1auth/post/responses/200"
@@ -921,6 +1091,14 @@ paths:
                 status_reason:
                   type: string
                   description: The reason for the status change
+            examples:
+              payment_approved:
+                value: |-
+                  {
+                    "id": "974613",
+                    "status": "declined",
+                    "status_reason": "Wrong credit card information"
+                  }
       responses:
         "200":
           $ref: "#/paths/~1delivery~1v1~1auth/post/responses/200"
@@ -1004,6 +1182,30 @@ paths:
                   $ref: "#/paths/~1delivery~1v1~1order/post/requestBody/content/application~1json\
                     /schema/properties/payments/items/oneOf/0/properties/billin\
                     g_address"
+            examples:
+              new_user:
+                value: |-
+                  {
+                    "id":                  "12345",
+                    "email":               "my_user@legiti.com",
+                    "document":            "123.456.789-10",
+                    "document_type":       "cpf",
+                    "phone_number":        "11999123456",
+                    "phone_country_code":  "55",
+                    "password_hash":       "effebbbeeabc123",
+                    "name":                "john fulano",
+                    "gender":              "male",
+                    "user_type":           "consumer",
+                    "creation_datetime":   "2019-12-17T00:48:03Z",
+                    "address":             {
+                      "street_name":       "Rua Fidalga",
+                      "street_number":     "252",
+                      "zip_code":          "05432-010",
+                      "city":              "São Paulo",
+                      "state":             "SP",
+                      "country":           "BR"
+                    }
+                  }
       responses:
         "200":
           $ref: "#/paths/~1delivery~1v1~1auth/post/responses/200"
@@ -1085,6 +1287,13 @@ paths:
                   $ref: "#/paths/~1delivery~1v1~1order/post/requestBody/content/application~1json\
                     /schema/properties/payments/items/oneOf/0/properties/billin\
                     g_address"
+            examples:
+              update_user_email:
+                value: |-
+                  {
+                    "id":    "12345",
+                    "email": "my_user@legiti.com"
+                  }
       responses:
         "200":
           $ref: "#/paths/~1delivery~1v1~1auth/post/responses/200"
@@ -1123,6 +1332,13 @@ paths:
                     - reset
                   description: The type of user action that was taken. Accepted values are
                     recovery and reset (case-insensitive)
+            examples:
+              password_recovery:
+                value: |-
+                  {
+                    "recovery_email": "badguy@yahoo.com",
+                    "action_type":    "reset"
+                  }
       responses:
         "200":
           $ref: "#/paths/~1delivery~1v1~1auth/post/responses/200"
